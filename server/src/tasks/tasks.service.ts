@@ -11,6 +11,9 @@ export class TasksService {
       where: {
         id,
       },
+      include: {
+        status: true,
+      }
     });
 
     if (!task) {
@@ -36,6 +39,12 @@ export class TasksService {
         id,
       },
     });
+  }
+
+  async deleteTasksMany(statusId: number) {
+    return this.prisma.task.deleteMany({ where: {
+      statusId,
+    }})
   }
 
   async updateTask(id: number, data) {

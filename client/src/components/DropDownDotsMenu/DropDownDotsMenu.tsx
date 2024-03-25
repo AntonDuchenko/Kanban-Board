@@ -1,16 +1,23 @@
 import editIcon from "../../assets/edit.svg";
 import deleteIcon from "../../assets/delete.svg";
 import plusBlackIcon from "../../assets/plus-black.svg";
-import { useState } from 'react';
-import classNames from 'classnames';
+import { useContext, useState } from "react";
+import classNames from "classnames";
+import { deleteBoard } from "../../api/boards";
+import { useAppDispatch } from "../../app/hooks";
+import * as boardsSlice from "../../features/boardsSlice";
+import { BoardContext } from '../../context/board';
 
 interface Props {
-  id: string;
-  setIsEditing: React.Dispatch<React.SetStateAction<boolean>>
+  id: number;
+  setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const DropDownDotsMenu: React.FC<Props> = ({ id, setIsEditing }) => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const dispatch = useAppDispatch();
+
+  const { setIsCreateTask, setStatusId } = useContext(BoardContext);
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -19,20 +26,32 @@ export const DropDownDotsMenu: React.FC<Props> = ({ id, setIsEditing }) => {
   const handlerOnEditClick = () => {
     setIsEditing(true);
     toggleMenu();
+  };
+
+  const handlerOnDeleteClick = async () => {
+    try {
+      await deleteBoard(+id);
+
+      dispatch(boardsSlice.init());
+    } catch (error) {}
+  };
+
+  const handlerOnCreateClick = () => {
+    setIsCreateTask(true);
+    toggleMenu();
+    setStatusId(id);
   }
 
   return (
     <>
       <button
         onClick={toggleMenu}
-        id={`dropdownMenuIconButton-${id}`}
-        data-dropdown-toggle={`dropdownDots-${id}`}
+        id={`dropdownMenuIconButton-list-${id}`}
+        data-dropdown-toggle={`dropdownDots-list-${id}`}
         className="inline-flex items-center p-2 text-sm 
         font-medium text-center text-gray-900 bg-white 
-        rounded-lg hover:bg-gray-100 focus:ring-4 
-        focus:outline-none dark:text-white 
-        focus:ring-gray-50 dark:bg-gray-800 
-        dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+        rounded-lg hover:bg-gray-100 
+        focus:outline-none"
         type="button"
       >
         <svg
@@ -48,15 +67,18 @@ export const DropDownDotsMenu: React.FC<Props> = ({ id, setIsEditing }) => {
 
       {/* <!-- Dropdown menu --> */}
       <div
-        id={`dropdownDots-${id}`}
-        className={classNames("z-10 bg-white divide-y divide-gray-100 rounded-lg", 
-        "shadow w-44 border-gray-300 border", {
-          hidden: !menuOpen
-        })}
+        id={`dropdownDots-list-${id}`}
+        className={classNames(
+          "z-10 bg-white divide-y divide-gray-100 rounded-lg",
+          "shadow w-44 border-gray-300 border",
+          {
+            hidden: !menuOpen,
+          }
+        )}
       >
         <ul
           className="py-2 text-sm text-gray-700"
-          aria-labelledby={`dropdownMenuIconButton-${id}`}
+          aria-labelledby={`dropdownMenuIconButton-list-${id}`}
         >
           <li>
             <button
@@ -70,9 +92,10 @@ export const DropDownDotsMenu: React.FC<Props> = ({ id, setIsEditing }) => {
             </button>
           </li>
           <li>
-            <a
-              href="#"
-              className="hover:bg-gray-100 flex items-center px-4 py-2 gap-2"
+            <button
+              onClick={handlerOnCreateClick}
+              type="button"
+              className="hover:bg-gray-100 flex items-center px-4 py-2 gap-2 w-full"
             >
               <img
                 src={plusBlackIcon}
@@ -80,17 +103,18 @@ export const DropDownDotsMenu: React.FC<Props> = ({ id, setIsEditing }) => {
                 className="h-[16px]"
               />
               Add new card
-            </a>
+            </button>
           </li>
           <li>
-            <a
-              href="#"
+            <button
+              onClick={handlerOnDeleteClick}
+              type="button"
               className="hover:bg-gray-10 flex items-center px-4 py-2 gap-2
-               text-[#ff0000] hover:bg-gray-100"
+               text-[#ff0000] hover:bg-gray-100 w-full"
             >
               <img src={deleteIcon} alt="delete.svg" className="h-[16px]" />
               Delete
-            </a>
+            </button>
           </li>
         </ul>
       </div>

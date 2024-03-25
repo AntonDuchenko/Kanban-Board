@@ -1,39 +1,59 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import plusBlack from "../../assets/plus-black.svg";
 import { DropDownDotsMenu } from "../DropDownDotsMenu/DropDownDotsMenu";
 import { TaskCard } from "../TaskCard/TaskCard";
 import classNames from "classnames";
+import { updateBoard } from "../../api/boards";
+import { useAppDispatch } from "../../app/hooks";
+import * as boardsSlice from "../../features/boardsSlice";
+import { BoardContext } from "../../context/board";
 
 interface Props {
-  id: string;
+  board: Board;
 }
 
-export const TaskList: React.FC<Props> = ({ id }) => {
+export const TaskList: React.FC<Props> = ({ board }) => {
   const [isEditing, setIsEditing] = useState(false);
+  const [newTitle, setNewTitle] = useState(board.title);
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const dispatch = useAppDispatch();
 
-  const handlerOnSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const { setIsCreateTask, setStatusId } = useContext(BoardContext);
+
+  useEffect(() => setTasks(board.tasks), [board]);
+
+  const handlerOnSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    await updateBoard(+board.id, board.title, newTitle);
     setIsEditing(false);
+    await dispatch(boardsSlice.init());
   };
+
+  const handlerOnCreateClick = () => {
+    setIsCreateTask(true);
+
+    setStatusId(board.id);
+  };
+
+  const handlerOnChangeTitle = (event: React.ChangeEvent<HTMLInputElement>) =>
+    setNewTitle(event.target.value);
 
   return (
     <div
       className="pt-5 flex flex-col gap-4 col-span-full 
-    sm:col-span-2 xl:col-span-3 max-h-[800px] overflow-y-auto"
+    sm:col-span-2 xl:col-span-3 max-h-[700px] overflow-y-auto"
     >
       <div
         className="border-y-2 border-solid py-2 flex font-medium 
       text-lg justify-between items-center gap-2"
       >
-        <p className={classNames({ hidden: isEditing })}>To Do</p>
+        <p className={classNames({ hidden: isEditing })}>{board.title}</p>
         {isEditing && (
-          <form
-            className="max-w-[65%]"
-            onSubmit={handlerOnSubmit}
-          >
+          <form className="max-w-[65%]" onSubmit={handlerOnSubmit}>
             <input
+              onChange={handlerOnChangeTitle}
               onBlur={() => setIsEditing(false)}
-              defaultValue="To Do"
+              defaultValue={board.title}
               autoFocus
               type="text"
               className="p-1 border-slate-300 rounded-lg 
@@ -42,20 +62,23 @@ export const TaskList: React.FC<Props> = ({ id }) => {
           </form>
         )}
         <div className="flex gap-1 justify-center items-center">
-          <p>45</p>
-          <DropDownDotsMenu id={`list-${id}`} setIsEditing={setIsEditing} />
+          <p>{board.tasks.length}</p>
+          <DropDownDotsMenu id={board.id} setIsEditing={setIsEditing} />
         </div>
       </div>
       <button
+        onClick={handlerOnCreateClick}
         type="button"
         className="border-dashed border-2 border-dark flex transition-all 
-      gap-2 justify-center items-center h-[40px] w-full rounded-lg hover:bg-slate-200"
+      gap-2 justify-center items-center min-h-[40px] w-full rounded-lg hover:bg-slate-200"
       >
         <img src={plusBlack} alt="plus.svg" />
         Add new card
       </button>
 
-      <TaskCard id={id} />
+      {tasks.map((task) => (
+        <TaskCard task={task} key={task.id} />
+      ))}
     </div>
   );
 };

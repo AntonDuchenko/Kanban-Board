@@ -1,5 +1,5 @@
 interface Props {
-  id: string;
+  id: number;
 }
 
 export const DropDownMenu: React.FC<Props> = ({ id }) => {

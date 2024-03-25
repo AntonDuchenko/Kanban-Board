@@ -10,7 +10,7 @@ import {
 import { StatusesService } from './statuses.service';
 import { Status } from '@prisma/client';
 
-@Controller('statuses')
+@Controller('api/statuses')
 export class StatusesController {
   constructor(private readonly statusesService: StatusesService) {}
 

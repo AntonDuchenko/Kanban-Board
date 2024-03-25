@@ -2,9 +2,9 @@ type Task = {
   id: number,
   name: string,
   description: string,
-  status: string,
-  dueDate: Date,
+  dueDate: string | Date,
   priority: string,
-  createdAt: number,
-  updatedAt: number,
+  status: Status,
+  statusId: number,
+  actions: Action[],
 }

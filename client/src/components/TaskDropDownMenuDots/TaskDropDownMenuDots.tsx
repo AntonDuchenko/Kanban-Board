@@ -2,14 +2,16 @@ import editIcon from "../../assets/edit.svg";
 import deleteIcon from "../../assets/delete.svg";
 import { useState } from "react";
 import { useAppDispatch } from "../../app/hooks";
-import { actions as editActions } from "../../features/editedTask";
+import { actions as editActions } from "../../features/editedTaskSlice";
 import classNames from "classnames";
+import { deleteTask } from '../../api/tasks';
+import * as boardsSlice from '../../features/boardsSlice';
 
 interface Props {
-  id: string;
+  task: Task;
 }
 
-export const TaskDropDownMenuDots: React.FC<Props> = ({ id }) => {
+export const TaskDropDownMenuDots: React.FC<Props> = ({ task }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const dispatch = useAppDispatch();
 
@@ -17,27 +19,21 @@ export const TaskDropDownMenuDots: React.FC<Props> = ({ id }) => {
     setMenuOpen(!menuOpen);
   };
 
-  const handlerOnClick = () => {
-    dispatch(
-      editActions.setTask({
-        id: 1,
-        name: "string",
-        description: "string",
-        status: "string",
-        dueDate: new Date(),
-        priority: "string",
-        createdAt: 12,
-        updatedAt: 12,
-      })
-    );
+  const handlerOnEditClick = () => {
+    dispatch(editActions.setTask(task));
     toggleMenu();
-  }
+  };
+
+  const handlerOnDeleteClick = async () => {
+    await deleteTask(task.id)
+    await dispatch(boardsSlice.init())
+  };
 
   return (
     <>
       <button
-        id={`dropdownMenuIconButton-${id}`}
-        data-dropdown-toggle={`dropdownDots-${id}`}
+        id={`dropdownMenuIconButton-task-${task.id}`}
+        data-dropdown-toggle={`dropdownDots-task-${task.id}`}
         className="inline-flex items-center p-2 text-sm 
         font-medium text-center text-gray-900 bg-white 
         rounded-lg hover:bg-gray-100 focus:ring-4 
@@ -60,23 +56,21 @@ export const TaskDropDownMenuDots: React.FC<Props> = ({ id }) => {
 
       {/* <!-- Dropdown menu --> */}
       <div
-        id={`dropdownDots-${id}`}
-        className={
-          classNames(
-            "z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 border-gray-300 border",
-            {
-              hidden: !menuOpen,
-            }
-          )
-        }
+        id={`dropdownDots-task-${task.id}`}
+        className={classNames(
+          "z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 border-gray-300 border",
+          {
+            hidden: !menuOpen,
+          }
+        )}
       >
         <ul
           className="py-2 text-sm text-gray-700"
-          aria-labelledby={`dropdownMenuIconButton-${id}`}
+          aria-labelledby={`dropdownMenuIconButton-task-${task.id}`}
         >
           <li>
             <button
-              onClick={handlerOnClick}
+              onClick={handlerOnEditClick}
               type="button"
               className="hover:bg-gray-100 dark:hover:bg-gray-600 w-full
               dark:hover:text-white flex items-center gap-2 px-4 py-2"
@@ -86,14 +80,15 @@ export const TaskDropDownMenuDots: React.FC<Props> = ({ id }) => {
             </button>
           </li>
           <li>
-            <a
-              href="#"
+            <button
+              onClick={handlerOnDeleteClick}
+              type="button"
               className="hover:bg-gray-10 flex items-center px-4 py-2 gap-2
-               text-[#ff0000] hover:bg-gray-100"
+               text-[#ff0000] hover:bg-gray-100 w-full"
             >
               <img src={deleteIcon} alt="delete.svg" className="h-[16px]" />
               Delete
-            </a>
+            </button>
           </li>
         </ul>
       </div>

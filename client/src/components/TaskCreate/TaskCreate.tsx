@@ -1,49 +1,47 @@
-import { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useContext, useState } from "react";
 import closeIcon from "../../assets/close.svg";
-import { actions as editActions } from "../../features/editedTaskSlice";
-import { formatDateCalendar } from "../../utils/formateDateCalendar";
-import { updateTask } from "../../api/tasks";
+import { BoardContext } from "../../context/board";
+import { createTask } from "../../api/tasks";
+import { useAppDispatch } from "../../app/hooks";
 import * as boardsSlice from "../../features/boardsSlice";
-import { formateDateToDB } from "../../utils/formateDateToDB";
 
-export const TaskEdit = () => {
+export const TaskCreate = () => {
+  const { setIsCreateTask, statusId, setStatusId } = useContext(BoardContext);
   const dispatch = useAppDispatch();
-  const editingTask = useAppSelector((state) => state.editedTask) as Task;
 
-  const [newName, setNewName] = useState(editingTask.name);
-  const [newDescription, setNewDescription] = useState(editingTask.description);
-  const [newDueDate, setNewDueDate] = useState(
-    formatDateCalendar(editingTask.dueDate as string)
-  );
-  const [newPriority, setNewPriority] = useState(editingTask.priority);
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [dueDate, setDueDate] = useState("");
+  const [priority, setPriority] = useState("Low");
 
   const handlerOnChangeName = (event: React.ChangeEvent<HTMLInputElement>) =>
-    setNewName(event.target.value);
+    setName(event.target.value);
 
-  const handlerOnChangeDescription = (
-    event: React.ChangeEvent<HTMLTextAreaElement>
-  ) => setNewDescription(event.target.value);
+  const handlerOnChangeDesc = (event: React.ChangeEvent<HTMLTextAreaElement>) =>
+    setDescription(event.target.value);
 
-  const handlerOnChangeDPriority = (
+  const handlerOnChangeDate = (event: React.ChangeEvent<HTMLInputElement>) =>
+    setDueDate(event.target.value);
+
+  const handlerOnChangePriority = (
     event: React.ChangeEvent<HTMLSelectElement>
-  ) => setNewPriority(event.target.value);
-
-  const handlerOnChangeDueDate = (event: React.ChangeEvent<HTMLInputElement>) =>
-    setNewDueDate(event.target.value);
+  ) => setPriority(event.target.value);
 
   const handlerOnSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    await updateTask(editingTask.id, {
-      name: newName,
-      description: newDescription,
-      dueDate: formateDateToDB(newDueDate),
-      priority: newPriority,
+    await createTask({
+      name,
+      description,
+      dueDate: new Date(dueDate).toISOString(),
+      priority,
+      statusId,
+      actions: [{ action: "created", createAt: Date.now() }],
     });
 
+    setIsCreateTask(false);
     await dispatch(boardsSlice.init());
-    dispatch(editActions.removeTask());
+    setStatusId(0);
   };
 
   return (
@@ -53,7 +51,7 @@ export const TaskEdit = () => {
     >
       <div className="bg-slate-600 w-full h-10 rounded-t-xl top-0 right-0">
         <button
-          onClick={() => dispatch(editActions.removeTask())}
+          onClick={() => setIsCreateTask(false)}
           type="button"
           className="flex absolute right-3 top-2.5"
         >
@@ -62,7 +60,7 @@ export const TaskEdit = () => {
       </div>
 
       <div className="p-6">
-        <h3 className="mb-6 font-bold text-2xl">Edit Task</h3>
+        <h3 className="mb-6 font-bold text-2xl">Create Task</h3>
         <form onSubmit={handlerOnSubmit}>
           <div className="flex flex-col gap-6 mb-6">
             <div>
@@ -74,7 +72,6 @@ export const TaskEdit = () => {
               </label>
               <input
                 onChange={handlerOnChangeName}
-                value={newName}
                 type="text"
                 id="task_name"
                 className="bg-gray-50 border border-gray-300 text-gray-900 
@@ -91,8 +88,7 @@ export const TaskEdit = () => {
                 Description
               </label>
               <textarea
-                onChange={handlerOnChangeDescription}
-                value={newDescription}
+                onChange={handlerOnChangeDesc}
                 id="description"
                 rows={4}
                 className="block p-2.5 w-full text-sm text-gray-900 
@@ -109,8 +105,7 @@ export const TaskEdit = () => {
                 Due date
               </label>
               <input
-                onChange={handlerOnChangeDueDate}
-                value={newDueDate}
+                onChange={handlerOnChangeDate}
                 type="date"
                 id="due_date"
                 className="bg-gray-50 border border-gray-300 text-gray-900 
@@ -128,8 +123,8 @@ export const TaskEdit = () => {
                 Priority
               </label>
               <select
-                onChange={handlerOnChangeDPriority}
-                value={newPriority}
+                defaultValue={priority}
+                onChange={handlerOnChangePriority}
                 id="countries"
                 className="bg-gray-50 border border-gray-300 text-gray-900 
                 text-sm rounded-lg focus:ring-black focus:border-black block 
