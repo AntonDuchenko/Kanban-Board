@@ -1,7 +1,6 @@
 import { useAppDispatch } from "../../app/hooks";
 import * as boardsSlice from "../../features/boardsSlice";
 import editIcon from "../../assets/edit.svg";
-import plusBlackIcon from "../../assets/plus-black.svg";
 import deleteIcon from "../../assets/delete.svg";
 import {
   TEDropdown,
@@ -10,35 +9,32 @@ import {
   TEDropdownItem,
   TERipple,
 } from "tw-elements-react";
-import { useContext } from "react";
-import { BoardContext } from "../../context/board";
-import { deleteBoard } from '../../api/boards';
+import { useState } from "react";
+import { deleteTask } from '../../api/tasks';
+import { actions as editActions } from "../../features/editedTaskSlice";
 
 interface Props {
-  id: number;
+  task: Task;
 }
 
-export const DropDownDotsMenu: React.FC<Props> = ({ id }) => {
+export const Dropdots: React.FC<Props> = ({ task }) => {
+  const [menuOpen, setMenuOpen] = useState(false);
   const dispatch = useAppDispatch();
 
-  const { setIsCreateTask, setStatusId, setIsEditing } = useContext(BoardContext);
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
 
   const handlerOnEditClick = () => {
-    setIsEditing(id);
+    dispatch(editActions.setTask(task));
+    toggleMenu();
   };
 
   const handlerOnDeleteClick = async () => {
-    try {
-      await deleteBoard(+id);
-
-      dispatch(boardsSlice.init());
-    } catch (error) {}
+    await deleteTask(task.id)
+    await dispatch(boardsSlice.init())
   };
 
-  const handlerOnCreateClick = () => {
-    setIsCreateTask(true);
-    setStatusId(id);
-  };
 
   return (
     <TEDropdown>
@@ -62,13 +58,13 @@ export const DropDownDotsMenu: React.FC<Props> = ({ id }) => {
         </TEDropdownToggle>
       </TERipple>
 
-      <TEDropdownMenu className="w-full min-w-[200px]">
+      <TEDropdownMenu className="w-full">
         <TEDropdownItem>
           <button
             onClick={handlerOnEditClick}
             type="button"
-            className="hover:bg-gray-300 w-full
-              bg-gray-200 flex items-center gap-2 px-4 py-2"
+            className="hover:bg-gray-100 dark:hover:bg-gray-600 w-full
+              dark:hover:text-white flex items-center gap-2 px-4 py-2"
           >
             <img src={editIcon} alt="edit.svg" className="h-[16px]" />
             Edit
@@ -76,25 +72,10 @@ export const DropDownDotsMenu: React.FC<Props> = ({ id }) => {
         </TEDropdownItem>
         <TEDropdownItem>
           <button
-            onClick={handlerOnCreateClick}
-            type="button"
-            className="hover:bg-gray-300 dark:hover:bg-gray-600 w-full
-            bg-gray-200 flex items-center gap-2 px-4 py-2"
-          >
-            <img
-              src={plusBlackIcon}
-              alt="plus-black.svg"
-              className="h-[16px]"
-            />
-            Add new card
-          </button>
-        </TEDropdownItem>
-        <TEDropdownItem>
-          <button
             onClick={handlerOnDeleteClick}
             type="button"
-            className="hover:bg-gray-300 flex items-center px-4 py-2 gap-2
-               text-[#ff0000] w-full bg-gray-200"
+            className="hover:bg-gray-10 flex items-center px-4 py-2 gap-2
+               text-[#ff0000] hover:bg-gray-100 w-full"
           >
             <img src={deleteIcon} alt="delete.svg" className="h-[16px]" />
             Delete

@@ -9,6 +9,8 @@ export const BoardContext = createContext<BoardContext>({
   setIsCreate: () => {},
   statusId: 0,
   setStatusId: () => {},
+  isEditing: 0,
+  setIsEditing: () => {},
 });
 
 interface Props {
@@ -16,6 +18,7 @@ interface Props {
 }
 
 export const BoardProvider: React.FC<Props> = ({ children }) => {
+  const [isEditing, setIsEditing] = useState(0);
   const [isCreateTask, setIsCreateTask] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isCreate, setIsCreate] = useState(false);
@@ -31,8 +34,10 @@ export const BoardProvider: React.FC<Props> = ({ children }) => {
       setIsCreate,
       statusId,
       setStatusId,
+      isEditing,
+      setIsEditing
     }),
-    [isCreateTask, statusId, isOpen, isCreate]
+    [isCreateTask, statusId, isOpen, isCreate, isEditing]
   );
 
   return (

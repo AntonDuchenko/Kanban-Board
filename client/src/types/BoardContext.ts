@@ -7,4 +7,6 @@ type BoardContext = {
   setIsCreate: React.Dispatch<React.SetStateAction<boolean>>;
   statusId: number;
   setStatusId: React.Dispatch<React.SetStateAction<number>>;
+  isEditing: number;
+  setIsEditing: React.Dispatch<React.SetStateAction<number>>;
 };

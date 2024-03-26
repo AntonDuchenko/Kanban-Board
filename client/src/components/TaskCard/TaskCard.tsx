@@ -6,6 +6,7 @@ import { TaskDropDownMenuDots } from "../TaskDropDownMenuDots/TaskDropDownMenuDo
 import { formatDate } from "../../utils/formateDate";
 import { getTaskById } from "../../api/tasks";
 import classNames from "classnames";
+import { Dropdots } from '../dropdots/dropdots';
 
 interface Props {
   task: Task;

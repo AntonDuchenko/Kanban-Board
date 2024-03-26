@@ -41,7 +41,7 @@ export const deleteTask = async (id: number) => {
   }
 };
 
-export const updateTask = async (id: number, data: Omit<Task, "id" | "status" | "statusId" | "actions">) => {
+export const updateTask = async (id: number, data: any) => {
   try {
     const respone = await axios.patch(`${BASE_URL}/tasks/${id}`, data);
 

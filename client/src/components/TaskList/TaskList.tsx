@@ -13,19 +13,18 @@ interface Props {
 }
 
 export const TaskList: React.FC<Props> = ({ board }) => {
-  const [isEditing, setIsEditing] = useState(false);
   const [newTitle, setNewTitle] = useState(board.title);
   const [tasks, setTasks] = useState<Task[]>([]);
   const dispatch = useAppDispatch();
 
-  const { setIsCreateTask, setStatusId } = useContext(BoardContext);
+  const { setIsCreateTask, setStatusId, setIsEditing, isEditing } = useContext(BoardContext);
 
   useEffect(() => setTasks(board.tasks), [board]);
 
   const handlerOnSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     await updateBoard(+board.id, board.title, newTitle);
-    setIsEditing(false);
+    setIsEditing(0);
     await dispatch(boardsSlice.init());
   };
 
@@ -47,12 +46,12 @@ export const TaskList: React.FC<Props> = ({ board }) => {
         className="border-y-2 border-solid py-2 flex font-medium 
       text-lg justify-between items-center gap-2"
       >
-        <p className={classNames({ hidden: isEditing })}>{board.title}</p>
-        {isEditing && (
+        <p className={classNames({ hidden: isEditing === board.id })}>{board.title}</p>
+        {isEditing === board.id && (
           <form className="max-w-[65%]" onSubmit={handlerOnSubmit}>
             <input
               onChange={handlerOnChangeTitle}
-              onBlur={() => setIsEditing(false)}
+              onBlur={() => setIsEditing(0)}
               defaultValue={board.title}
               autoFocus
               type="text"
@@ -63,7 +62,7 @@ export const TaskList: React.FC<Props> = ({ board }) => {
         )}
         <div className="flex gap-1 justify-center items-center">
           <p>{board.tasks.length}</p>
-          <DropDownDotsMenu id={board.id} setIsEditing={setIsEditing} />
+          <DropDownDotsMenu id={board.id} />
         </div>
       </div>
       <button
