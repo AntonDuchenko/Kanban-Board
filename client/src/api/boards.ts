@@ -1,6 +1,16 @@
 import axios from "axios";
 import { BASE_URL } from "../variable";
 
+export const getBoardById = async (id: number) => {
+  try {
+    const response = await axios.get<Board>(`${BASE_URL}/statuses/${id}`);
+
+    return response.data;
+  } catch (error) {
+    throw new Error("Unable to get ");
+  }
+}
+
 export const getBoards = async () => {
   try {
     const response = await axios.get<Board[]>(`${BASE_URL}/statuses`);

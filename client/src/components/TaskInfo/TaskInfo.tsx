@@ -1,6 +1,5 @@
 import closeIcon from "../../assets/close.svg";
 import editIcon from "../../assets/edit.svg";
-import dotIcon from "../../assets/dot.svg";
 import statusIcon from "../../assets/status.svg";
 import priorityIcon from "../../assets/priority.svg";
 import calendarGrayIcon from "../../assets/calendar-gray.svg";
@@ -8,13 +7,18 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { actions as taskActions } from "../../features/choosedTaskSlice";
 import { actions as editActions } from "../../features/editedTaskSlice";
 import { formatDate } from "../../utils/formateDate";
-import { formatDateLog } from '../../utils/formateDateLog';
+import { useEffect, useState } from "react";
+import { getHistoryByTaskId } from "../../api/history";
+import { TaskActivity } from '../TaskActivity/TaskActivity';
 
 export const TaskInfo = () => {
   const dispatch = useAppDispatch();
   const task = useAppSelector((state) => state.choosedTask) as Task;
-  
-  console.log(task);
+  const [taskHistory, setTaskHistory] = useState<Action[]>([]);
+
+  useEffect(() => {
+    getHistoryByTaskId(task.id).then(setTaskHistory);
+  }, []);
 
   const handlerOnClick = () => {
     dispatch(editActions.setTask(task));
@@ -70,7 +74,7 @@ export const TaskInfo = () => {
                 <span className="text-gray-400 ">Due date</span>
               </div>
               <span className="font-semibold w-[50%]">
-                {formatDate(task.dueDate)}
+                {formatDate(task.dueDate as string)}
               </span>
             </div>
             <div className="flex justify-between items-center">
@@ -98,19 +102,7 @@ export const TaskInfo = () => {
         >
           <div className="font-semibold text-xl">Activity</div>
           <div className="text-gray-500">
-            <ul className="">
-              {task.actions.map((action) => (
-                <li className="flex justify-between" key={action.action}>
-                  <div className="flex">
-                    <img src={dotIcon} alt="dot.svg" className="h-[25px]" />
-                    <span>{`You ${action.action}`}</span>
-                  </div>
-                  <span className="text-right">
-                    {formatDateLog(action.createAt.toString())}
-                  </span>
-                </li>
-              ))}
-            </ul>
+            <TaskActivity taskHistory={taskHistory} />
           </div>
         </div>
       </div>

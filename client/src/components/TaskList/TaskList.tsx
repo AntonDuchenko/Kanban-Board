@@ -17,7 +17,7 @@ export const TaskList: React.FC<Props> = ({ board }) => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const dispatch = useAppDispatch();
 
-  const { setIsCreateTask, setStatusId, setIsEditing, isEditing } = useContext(BoardContext);
+  const { setIsCreateTask, setStatus, setIsEditing, isEditing } = useContext(BoardContext);
 
   useEffect(() => setTasks(board.tasks), [board]);
 
@@ -31,7 +31,7 @@ export const TaskList: React.FC<Props> = ({ board }) => {
   const handlerOnCreateClick = () => {
     setIsCreateTask(true);
 
-    setStatusId(board.id);
+    setStatus(board);
   };
 
   const handlerOnChangeTitle = (event: React.ChangeEvent<HTMLInputElement>) =>
@@ -62,7 +62,7 @@ export const TaskList: React.FC<Props> = ({ board }) => {
         )}
         <div className="flex gap-1 justify-center items-center">
           <p>{board.tasks.length}</p>
-          <DropDownDotsMenu id={board.id} />
+          <DropDownDotsMenu board={board} />
         </div>
       </div>
       <button

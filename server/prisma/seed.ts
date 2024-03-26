@@ -6,19 +6,15 @@ async function main() {
     data: [
       {
         title: 'To Do',
-        actions: [{ action: 'Created', updateAt: '2024-03-24T09:00:00Z' }],
       },
       {
         title: 'Planned',
-        actions: [{ action: 'Created', updateAt: '2024-03-25T09:00:00Z' }],
       },
       {
         title: 'In Progress',
-        actions: [{ action: 'Created', updateAt: '2024-03-23T09:00:00Z' }],
       },
       {
         title: 'Closed',
-        actions: [{ action: 'Created', updateAt: '2024-03-24T12:00:00Z' }],
       },
     ],
   });
@@ -31,10 +27,6 @@ async function main() {
         dueDate: '2024-03-25T12:00:00Z',
         priority: 'Low',
         statusId: 1,
-        actions: [
-          { action: 'Complete task', createAt: '2024-03-24T10:00:00Z' },
-          { action: 'Review task details', createAt: '2024-03-24T11:00:00Z' },
-        ],
       },
       {
         name: 'Java Script',
@@ -42,10 +34,6 @@ async function main() {
         dueDate: '2024-03-25T12:00:00Z',
         priority: 'Medium',
         statusId: 2,
-        actions: [
-          { action: 'Complete task', createAt: '2024-03-24T10:00:00Z' },
-          { action: 'Review task details', createAt: '2024-03-24T11:00:00Z' },
-        ],
       },
       {
         name: 'React',
@@ -53,10 +41,29 @@ async function main() {
         dueDate: '2024-03-25T12:00:00Z',
         priority: 'High',
         statusId: 3,
-        actions: [
-          { action: 'Complete task', createAt: '2024-03-24T10:00:00Z' },
-          { action: 'Review task details', createAt: '2024-03-24T11:00:00Z' },
-        ],
+      },
+    ],
+  });
+
+  await prisma.history.createMany({
+    data: [
+      {
+        action: 'Added',
+        description: ['HTML', 'To Do'],
+        taskId: 1,
+        createAt: '2024-03-21T09:00:00Z',
+      },
+      {
+        action: 'Added',
+        description: ['Java Script', 'Planned'],
+        taskId: 2,
+        createAt: '2024-03-22T11:50:00Z',
+      },
+      {
+        action: 'Added',
+        description: ['React', 'In Progress'],
+        taskId: 3,
+        createAt: '2024-03-23T12:48:00Z',
       },
     ],
   });

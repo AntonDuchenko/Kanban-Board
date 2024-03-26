@@ -1,3 +1,4 @@
+import { createHistory } from '../../api/history';
 import { updateTask } from "../../api/tasks";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import * as boardsSlice from "../../features/boardsSlice";
@@ -10,15 +11,23 @@ import {
 } from "tw-elements-react";
 
 interface Props {
-  id: number;
+  task: Task;
 }
 
-export const DropDownMenu: React.FC<Props> = ({ id }) => {
+export const DropDownMenu: React.FC<Props> = ({ task }) => {
   const boards = useAppSelector((state) => state.boards.boards);
   const dispatch = useAppDispatch();
 
-  const handlerOnChangeStatus = async (statusId: number) => {
-    await updateTask(id, { statusId });
+  const prevStatus = boards.find(board => board.id === task.statusId);
+
+  const handlerOnChangeStatus = async (board: Board) => {
+    await updateTask(task.id, { statusId: board.id });
+
+    createHistory(task.id, {
+      action: "Change status",
+      description: [`${task.name}`, `${prevStatus?.title}`, `${board.title}`],
+      createAt: new Date().toISOString(),
+    });
 
     await dispatch(boardsSlice.init());
   };
@@ -59,7 +68,7 @@ export const DropDownMenu: React.FC<Props> = ({ id }) => {
             key={board.id}
           >
             <button
-              onClick={() => handlerOnChangeStatus(board.id)}
+              onClick={() => handlerOnChangeStatus(board)}
               type="button"
               className="block w-full min-w-[160px] cursor-pointer whitespace-nowrap bg-transparent 
           px-4 py-2 text-sm text-left font-normal pointer-events-auto

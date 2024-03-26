@@ -6,5 +6,4 @@ type Task = {
   priority: string,
   status: Status,
   statusId: number,
-  actions: Action[],
 }

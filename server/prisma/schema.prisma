@@ -13,11 +13,18 @@ enum Priority {
   High
 }
 
+model History {
+  id          Int      @id @default(autoincrement())
+  action      String
+  description String[]
+  taskId      Int
+  createAt    DateTime
+}
+
 model Status {
   id      Int    @id @default(autoincrement())
   title   String @unique
   tasks   Task[]
-  actions Json[]
 }
 
 model Task {
@@ -28,5 +35,4 @@ model Task {
   priority    Priority
   statusId    Int
   status      Status   @relation(fields: [statusId], references: [id])
-  actions     Json[]
 }

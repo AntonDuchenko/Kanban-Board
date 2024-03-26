@@ -10,8 +10,10 @@ import {
   TERipple,
 } from "tw-elements-react";
 import { useState } from "react";
-import { deleteTask } from '../../api/tasks';
+import { deleteTask } from "../../api/tasks";
 import { actions as editActions } from "../../features/editedTaskSlice";
+import { createHistory } from "../../api/history";
+import { getBoardById } from '../../api/boards';
 
 interface Props {
   task: Task;
@@ -31,10 +33,15 @@ export const TaskDropDownMenuDots: React.FC<Props> = ({ task }) => {
   };
 
   const handlerOnDeleteClick = async () => {
-    await deleteTask(task.id)
-    await dispatch(boardsSlice.init())
+    await deleteTask(task.id);
+    const board = await getBoardById(task.statusId);
+    await createHistory(task.id, {
+      action: "Deleted",
+      description: [`${task.name}`, `${board.title}`],
+      createAt: new Date().toISOString(),
+    });
+    await dispatch(boardsSlice.init());
   };
-
 
   return (
     <TEDropdown>
@@ -58,7 +65,7 @@ export const TaskDropDownMenuDots: React.FC<Props> = ({ task }) => {
         </TEDropdownToggle>
       </TERipple>
 
-      <TEDropdownMenu className="w-full min-w-[150px]">
+      <TEDropdownMenu className="w-full !min-w-[150px]">
         <TEDropdownItem>
           <button
             onClick={handlerOnEditClick}

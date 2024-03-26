@@ -4,9 +4,10 @@ import { BoardContext } from "../../context/board";
 import { createTask } from "../../api/tasks";
 import { useAppDispatch } from "../../app/hooks";
 import * as boardsSlice from "../../features/boardsSlice";
+import { createHistory } from '../../api/history';
 
 export const TaskCreate = () => {
-  const { setIsCreateTask, statusId, setStatusId } = useContext(BoardContext);
+  const { setIsCreateTask, status, setStatus } = useContext(BoardContext);
   const dispatch = useAppDispatch();
 
   const [name, setName] = useState("");
@@ -30,18 +31,23 @@ export const TaskCreate = () => {
   const handlerOnSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    await createTask({
+    const createdTask = await createTask({
       name,
       description,
       dueDate: new Date(dueDate).toISOString(),
       priority,
-      statusId,
-      actions: [{ action: "created", createAt: Date.now() }],
+      statusId: status?.id as number,
+    });
+
+    createHistory(createdTask.id, {
+      action: "Added",
+      description: [`${createdTask.name}`, `${status?.title}`],
+      createAt: new Date().toISOString(),
     });
 
     setIsCreateTask(false);
     await dispatch(boardsSlice.init());
-    setStatusId(0);
+    setStatus(null);
   };
 
   return (

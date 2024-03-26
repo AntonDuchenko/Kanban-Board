@@ -7,8 +7,8 @@ export const BoardContext = createContext<BoardContext>({
   setIsOpen: () => {},
   isCreate: false,
   setIsCreate: () => {},
-  statusId: 0,
-  setStatusId: () => {},
+  status: null,
+  setStatus: () => {},
   isEditing: 0,
   setIsEditing: () => {},
 });
@@ -22,7 +22,7 @@ export const BoardProvider: React.FC<Props> = ({ children }) => {
   const [isCreateTask, setIsCreateTask] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isCreate, setIsCreate] = useState(false);
-  const [statusId, setStatusId] = useState(0);
+  const [status, setStatus] = useState<Status | null>(null);
 
   const preparedValue = useMemo(
     () => ({
@@ -32,12 +32,12 @@ export const BoardProvider: React.FC<Props> = ({ children }) => {
       setIsOpen,
       isCreate,
       setIsCreate,
-      statusId,
-      setStatusId,
+      status,
+      setStatus,
       isEditing,
       setIsEditing
     }),
-    [isCreateTask, statusId, isOpen, isCreate, isEditing]
+    [isCreateTask, status, isOpen, isCreate, isEditing]
   );
 
   return (

@@ -6,6 +6,7 @@ import { formatDateCalendar } from "../../utils/formateDateCalendar";
 import { updateTask } from "../../api/tasks";
 import * as boardsSlice from "../../features/boardsSlice";
 import { formateDateToDB } from "../../utils/formateDateToDB";
+import { createHistory } from '../../api/history';
 
 export const TaskEdit = () => {
   const dispatch = useAppDispatch();
@@ -41,6 +42,22 @@ export const TaskEdit = () => {
       dueDate: formateDateToDB(newDueDate),
       priority: newPriority,
     });
+
+    if (editingTask.name !== newName) {
+      await createHistory(editingTask.id, {
+        action: "Change name",
+        description: [`${editingTask.name}`, `${editingTask.name}`, `${newName}`],
+        createAt: new Date().toISOString(),
+      })
+    }
+
+    if (editingTask.priority !== newPriority) {
+      await createHistory(editingTask.id, {
+        action: "Change priority",
+        description: [`${editingTask.name}`, `${editingTask.priority}`, `${newPriority}`],
+        createAt: new Date().toISOString(),
+      })
+    }
 
     await dispatch(boardsSlice.init());
     dispatch(editActions.removeTask());

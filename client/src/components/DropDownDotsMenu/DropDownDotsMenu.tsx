@@ -15,21 +15,21 @@ import { BoardContext } from "../../context/board";
 import { deleteBoard } from '../../api/boards';
 
 interface Props {
-  id: number;
+  board: Status;
 }
 
-export const DropDownDotsMenu: React.FC<Props> = ({ id }) => {
+export const DropDownDotsMenu: React.FC<Props> = ({ board }) => {
   const dispatch = useAppDispatch();
 
-  const { setIsCreateTask, setStatusId, setIsEditing } = useContext(BoardContext);
+  const { setIsCreateTask, setStatus, setIsEditing } = useContext(BoardContext);
 
   const handlerOnEditClick = () => {
-    setIsEditing(id);
+    setIsEditing(board.id);
   };
 
   const handlerOnDeleteClick = async () => {
     try {
-      await deleteBoard(+id);
+      await deleteBoard(+board.id);
 
       dispatch(boardsSlice.init());
     } catch (error) {}
@@ -37,7 +37,7 @@ export const DropDownDotsMenu: React.FC<Props> = ({ id }) => {
 
   const handlerOnCreateClick = () => {
     setIsCreateTask(true);
-    setStatusId(id);
+    setStatus(board);
   };
 
   return (
@@ -62,7 +62,7 @@ export const DropDownDotsMenu: React.FC<Props> = ({ id }) => {
         </TEDropdownToggle>
       </TERipple>
 
-      <TEDropdownMenu className="w-full min-w-[200px]">
+      <TEDropdownMenu className="w-full !min-w-[200px]">
         <TEDropdownItem>
           <button
             onClick={handlerOnEditClick}
