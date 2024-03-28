@@ -23,7 +23,7 @@ export const getTasks = async () => {
 
 export const createTask = async (taskInfo: Omit<Task, "id" | "status">) => {
   try {
-    const respone = await axios.post(`${BASE_URL}/tasks`, taskInfo);
+    const respone = await axios.post<Task>(`${BASE_URL}/tasks`, taskInfo);
 
     return respone.data;
   } catch (error) {
@@ -43,7 +43,7 @@ export const deleteTask = async (id: number) => {
 
 export const updateTask = async (id: number, data: any) => {
   try {
-    const respone = await axios.patch(`${BASE_URL}/tasks/${id}`, data);
+    const respone = await axios.patch<Task>(`${BASE_URL}/tasks/${id}`, data);
 
     return respone.data;
   } catch (error) {

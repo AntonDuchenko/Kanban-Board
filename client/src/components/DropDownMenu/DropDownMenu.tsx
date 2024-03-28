@@ -9,6 +9,8 @@ import {
   TEDropdownItem,
   TERipple,
 } from "tw-elements-react";
+import { toastError } from '../../utils/toastError';
+import { toastSuccess } from '../../utils/toastSuccess';
 
 interface Props {
   task: Task;
@@ -19,9 +21,11 @@ export const DropDownMenu: React.FC<Props> = ({ task }) => {
   const dispatch = useAppDispatch();
 
   const prevStatus = boards.find(board => board.id === task.statusId);
+  const filteredBoards = boards.filter(board => board.id !== task.statusId);
 
   const handlerOnChangeStatus = async (board: Board) => {
-    await updateTask(task.id, { statusId: board.id });
+    try {
+      await updateTask(task.id, { statusId: board.id });
 
     createHistory(task.id, {
       action: "Change status",
@@ -29,7 +33,12 @@ export const DropDownMenu: React.FC<Props> = ({ task }) => {
       createAt: new Date().toISOString(),
     });
 
+    toastSuccess(`Status of task ${task.name} was changed!`);
+
     await dispatch(boardsSlice.init());
+    } catch (error) {
+      toastError(`${error}`);
+    }
   };
 
   return (
@@ -62,7 +71,7 @@ export const DropDownMenu: React.FC<Props> = ({ task }) => {
       </TERipple>
 
       <TEDropdownMenu className="w-full">
-        {boards.map((board) => (
+        {filteredBoards.map((board) => (
           <TEDropdownItem
             className="bg-gray-300 divide-y divide-gray-100"
             key={board.id}

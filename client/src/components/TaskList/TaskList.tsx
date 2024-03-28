@@ -7,6 +7,9 @@ import { updateBoard } from "../../api/boards";
 import { useAppDispatch } from "../../app/hooks";
 import * as boardsSlice from "../../features/boardsSlice";
 import { BoardContext } from "../../context/board";
+import { toastSuccess } from "../../utils/toastSuccess";
+import { toastError } from "../../utils/toastError";
+import { TEInput } from "tw-elements-react";
 
 interface Props {
   board: Board;
@@ -17,15 +20,21 @@ export const TaskList: React.FC<Props> = ({ board }) => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const dispatch = useAppDispatch();
 
-  const { setIsCreateTask, setStatus, setIsEditing, isEditing } = useContext(BoardContext);
+  const { setIsCreateTask, setStatus, setIsEditing, isEditing } =
+    useContext(BoardContext);
 
   useEffect(() => setTasks(board.tasks), [board]);
 
   const handlerOnSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    await updateBoard(+board.id, board.title, newTitle);
-    setIsEditing(0);
-    await dispatch(boardsSlice.init());
+    try {
+      event.preventDefault();
+      await updateBoard(+board.id, newTitle);
+      setIsEditing(0);
+      toastSuccess(`${board.title} was updated!`);
+      await dispatch(boardsSlice.init());
+    } catch (error) {
+      toastError(`${error}`);
+    }
   };
 
   const handlerOnCreateClick = () => {
@@ -40,24 +49,26 @@ export const TaskList: React.FC<Props> = ({ board }) => {
   return (
     <div
       className="pt-5 flex flex-col gap-4 col-span-full 
-    sm:col-span-2 xl:col-span-3 max-h-[700px] overflow-y-auto"
+    sm:col-span-3 lg:col-span-2 xl:col-span-3 max-h-[700px] overflow-y-auto"
     >
       <div
-        className="border-y-2 border-solid py-2 flex font-medium 
+        className="border-y-2 border-solid p-2 flex font-medium 
       text-lg justify-between items-center gap-2"
       >
-        <p className={classNames({ hidden: isEditing === board.id })}>{board.title}</p>
+        <p className={classNames({ hidden: isEditing === board.id })}>
+          {board.title}
+        </p>
         {isEditing === board.id && (
-          <form className="max-w-[65%]" onSubmit={handlerOnSubmit}>
-            <input
+          <form className="max-w-[70%]" onSubmit={handlerOnSubmit}>
+            <TEInput
+              value={newTitle}
+              autoFocus
               onChange={handlerOnChangeTitle}
               onBlur={() => setIsEditing(0)}
-              defaultValue={board.title}
-              autoFocus
               type="text"
-              className="p-1 border-slate-300 rounded-lg 
-            focus:ring-0 focus:border-black focus:ring-black"
-            />
+              id="exampleFormControlInputText"
+              label="Task name"
+            ></TEInput>
           </form>
         )}
         <div className="flex gap-1 justify-center items-center">

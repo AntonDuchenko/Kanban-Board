@@ -1,19 +1,39 @@
 import { useContext, useState } from "react";
-import closeIcon from "../../assets/close.svg";
+import {
+  TERipple,
+  TEModal,
+  TEModalDialog,
+  TEModalContent,
+  TEModalHeader,
+  TEModalBody,
+  TEModalFooter,
+  TEInput,
+  TETextarea,
+  TESelect,
+} from "tw-elements-react";
 import { BoardContext } from "../../context/board";
 import { createTask } from "../../api/tasks";
 import { useAppDispatch } from "../../app/hooks";
+import { createHistory } from "../../api/history";
+import { toastSuccess } from "../../utils/toastSuccess";
 import * as boardsSlice from "../../features/boardsSlice";
-import { createHistory } from '../../api/history';
+import { toastError } from "../../utils/toastError";
 
-export const TaskCreate = () => {
-  const { setIsCreateTask, status, setStatus } = useContext(BoardContext);
+export default function TaskCreate(): JSX.Element {
+  const { setIsCreateTask, isCreateTask, status, setStatus } =
+    useContext(BoardContext);
   const dispatch = useAppDispatch();
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [dueDate, setDueDate] = useState("");
   const [priority, setPriority] = useState("Low");
+
+  const data = [
+    { text: "Low", value: 1 },
+    { text: "Medium", value: 2 },
+    { text: "High", value: 3 },
+  ];
 
   const handlerOnChangeName = (event: React.ChangeEvent<HTMLInputElement>) =>
     setName(event.target.value);
@@ -28,131 +48,151 @@ export const TaskCreate = () => {
     event: React.ChangeEvent<HTMLSelectElement>
   ) => setPriority(event.target.value);
 
-  const handlerOnSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handlerOnSubmit = async (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    try {
+      event.preventDefault();
 
-    const createdTask = await createTask({
-      name,
-      description,
-      dueDate: new Date(dueDate).toISOString(),
-      priority,
-      statusId: status?.id as number,
-    });
+      const createdTask = await createTask({
+        name,
+        description,
+        dueDate: new Date(dueDate).toISOString(),
+        priority,
+        statusId: status?.id as number,
+      });
 
-    createHistory(createdTask.id, {
-      action: "Added",
-      description: [`${createdTask.name}`, `${status?.title}`],
-      createAt: new Date().toISOString(),
-    });
+      createHistory(createdTask.id, {
+        action: "Added",
+        description: [`${createdTask.name}`, `${status?.title}`],
+        createAt: new Date().toISOString(),
+      });
 
-    setIsCreateTask(false);
-    await dispatch(boardsSlice.init());
-    setStatus(null);
+      toastSuccess(`${createdTask.name} task created!`);
+
+      setIsCreateTask(false);
+      await dispatch(boardsSlice.init());
+      setStatus(null);
+    } catch (error) {
+      toastError(`${error}`);
+    }
   };
 
   return (
-    <div
-      className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
-  w-[90%] h-[90%] sm:w-[60%] sm:h-[80%] xl:w-[40%] z-50 rounded-xl bg-white overflow-y-auto"
-    >
-      <div className="bg-slate-600 w-full h-10 rounded-t-xl top-0 right-0">
-        <button
-          onClick={() => setIsCreateTask(false)}
-          type="button"
-          className="flex absolute right-3 top-2.5"
-        >
-          <img src={closeIcon} alt="close.svg" className="h-[20px]" />
-        </button>
-      </div>
-
-      <div className="p-6">
-        <h3 className="mb-6 font-bold text-2xl">Create Task</h3>
-        <form onSubmit={handlerOnSubmit}>
-          <div className="flex flex-col gap-6 mb-6">
-            <div>
-              <label
-                htmlFor="task_name"
-                className="block mb-2 text-sm font-medium text-gray-900"
+    <div>
+      {/* <!-- Modal --> */}
+      <TEModal show={isCreateTask} setShow={setIsCreateTask}>
+        <TEModalDialog className="sm:!max-w-[40%] sm:!h-[80%] sm:mb-7">
+          <TEModalContent className="!h-full">
+            <TEModalHeader>
+              {/* <!--Modal title--> */}
+              <h5 className="text-xl font-bold leading-normal text-neutral-800 dark:text-neutral-200">
+                Task creating
+              </h5>
+              {/* <!--Close button--> */}
+              <button
+                type="button"
+                className="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
+                onClick={() => setIsCreateTask(false)}
+                aria-label="Close"
               >
-                Task name
-              </label>
-              <input
-                onChange={handlerOnChangeName}
-                type="text"
-                id="task_name"
-                className="bg-gray-50 border border-gray-300 text-gray-900 
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="h-6 w-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </TEModalHeader>
+            {/* <!--Modal body--> */}
+            <TEModalBody className="overflow-y-auto">
+              <div>
+                <form>
+                  <div className="flex flex-col gap-6 mb-6">
+                      <TEInput
+                        required
+                        onChange={handlerOnChangeName}
+                        type="text"
+                        id="exampleFormControlInputText"
+                        label="Task name"
+                        className=""
+                      ></TEInput>
+
+                      <TETextarea
+                        className="resize-none"
+                        onChange={handlerOnChangeDesc}
+                        id="textareaExample"
+                        label="Description"
+                        rows={4}
+                      ></TETextarea>
+
+                    <div>
+                      <label
+                        htmlFor="due_date"
+                        className="block mb-2 text-sm font-medium text-gray-900"
+                      >
+                        Due date
+                      </label>
+                      <input
+                        onChange={handlerOnChangeDate}
+                        type="date"
+                        id="due_date"
+                        className="bg-gray-50 border border-gray-300 text-gray-900 
                 text-sm rounded-lg focus:ring-black focus:border-black 
-                block w-full p-2.5"
-                required
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="description"
-                className="block mb-2 text-sm font-medium text-gray-900"
-              >
-                Description
-              </label>
-              <textarea
-                onChange={handlerOnChangeDesc}
-                id="description"
-                rows={4}
-                className="block p-2.5 w-full text-sm text-gray-900 
-                bg-gray-50 rounded-lg border border-gray-300 focus:ring-black
-                 focus:border-black resize-none"
-              ></textarea>
-            </div>
+                block w-[220px] p-2.5"
+                        required
+                      />
+                    </div>
 
-            <div>
-              <label
-                htmlFor="due_date"
-                className="block mb-2 text-sm font-medium text-gray-900"
-              >
-                Due date
-              </label>
-              <input
-                onChange={handlerOnChangeDate}
-                type="date"
-                id="due_date"
-                className="bg-gray-50 border border-gray-300 text-gray-900 
-                text-sm rounded-lg focus:ring-black focus:border-black 
-                block w-full p-2.5"
-                required
-              />
-            </div>
-
-            <div className="">
-              <label
-                htmlFor="countries"
-                className="block mb-2 text-sm font-medium text-gray-900"
-              >
-                Priority
-              </label>
-              <select
-                defaultValue={priority}
-                onChange={handlerOnChangePriority}
-                id="countries"
-                className="bg-gray-50 border border-gray-300 text-gray-900 
-                text-sm rounded-lg focus:ring-black focus:border-black block 
-                w-full p-2.5"
-              >
-                <option value="Low">Low</option>
-                <option value="Medium">Medium</option>
-                <option value="High">High</option>
-              </select>
-            </div>
-          </div>
-          <button
-            type="submit"
-            className="text-white bg-slate-600 hover:bg-slate-800 
+                    <div className="relative">
+                      <TESelect
+                        defaultValue={priority}
+                        onChange={handlerOnChangePriority}
+                        data={data}
+                        label="Priority"
+                      />
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </TEModalBody>
+            <TEModalFooter>
+              <TERipple rippleColor="light">
+                <button
+                  type="button"
+                  className="text-white bg-slate-600 hover:bg-slate-800 
+                  focus:ring-4 focus:outline-none focus:ring-blue-300 
+                  font-medium rounded-lg text-sm w-full sm:w-auto 
+                  px-10 py-2.5 text-center mr-2"
+                  onClick={() => setIsCreateTask(false)}
+                >
+                  Close
+                </button>
+              </TERipple>
+              <TERipple rippleColor="light">
+                <button
+                  onClick={handlerOnSubmit}
+                  type="button"
+                  className="text-white bg-slate-500 hover:bg-slate-700 
             focus:ring-4 focus:outline-none focus:ring-blue-300 
             font-medium rounded-lg text-sm w-full sm:w-auto 
             px-10 py-2.5 text-center"
-          >
-            Submit
-          </button>
-        </form>
-      </div>
+                >
+                  Create task
+                </button>
+              </TERipple>
+            </TEModalFooter>
+          </TEModalContent>
+        </TEModalDialog>
+      </TEModal>
     </div>
   );
-};
+}

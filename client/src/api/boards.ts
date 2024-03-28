@@ -31,9 +31,8 @@ export const deleteBoard = async (id: number) => {
 
 export const createBoard = async (title: string) => {
   try {
-    const response = await axios.post(`${BASE_URL}/statuses`, {
-      title: title,
-      actions: [{ action: "Create", createAt: Date.now() }],
+    const response = await axios.post<Board>(`${BASE_URL}/statuses`, {
+      title,
     });
 
     return response.data;
@@ -42,11 +41,10 @@ export const createBoard = async (title: string) => {
   }
 };
 
-export const updateBoard = async (id: number, oldTitle: string, newTitle: string) => {
+export const updateBoard = async (id: number, newTitle: string) => {
   try {
-    const response = await axios.patch(`${BASE_URL}/statuses/${id}`, {
+    const response = await axios.patch<Board>(`${BASE_URL}/statuses/${id}`, {
       title: newTitle,
-      actions: [{ action: `Rename ${oldTitle} to ${newTitle}`}]
     })
 
     return response.data;

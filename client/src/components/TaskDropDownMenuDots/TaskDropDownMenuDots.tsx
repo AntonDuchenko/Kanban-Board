@@ -13,7 +13,9 @@ import { useState } from "react";
 import { deleteTask } from "../../api/tasks";
 import { actions as editActions } from "../../features/editedTaskSlice";
 import { createHistory } from "../../api/history";
-import { getBoardById } from '../../api/boards';
+import { getBoardById } from "../../api/boards";
+import { toastSuccess } from "../../utils/toastSuccess";
+import { toastError } from "../../utils/toastError";
 
 interface Props {
   task: Task;
@@ -33,14 +35,19 @@ export const TaskDropDownMenuDots: React.FC<Props> = ({ task }) => {
   };
 
   const handlerOnDeleteClick = async () => {
-    await deleteTask(task.id);
-    const board = await getBoardById(task.statusId);
-    await createHistory(task.id, {
-      action: "Deleted",
-      description: [`${task.name}`, `${board.title}`],
-      createAt: new Date().toISOString(),
-    });
-    await dispatch(boardsSlice.init());
+    try {
+      await deleteTask(task.id);
+      const board = await getBoardById(task.statusId);
+      await createHistory(task.id, {
+        action: "Deleted",
+        description: [`${task.name}`, `${board.title}`],
+        createAt: new Date().toISOString(),
+      });
+      toastSuccess(`Task ${task.name} deleted!`);
+      await dispatch(boardsSlice.init());
+    } catch (error) {
+      toastError(`${error}`);
+    }
   };
 
   return (

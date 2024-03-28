@@ -13,6 +13,8 @@ import {
 import { useContext } from "react";
 import { BoardContext } from "../../context/board";
 import { deleteBoard } from '../../api/boards';
+import { toastSuccess } from '../../utils/toastSuccess';
+import { toastError } from '../../utils/toastError';
 
 interface Props {
   board: Status;
@@ -30,9 +32,11 @@ export const DropDownDotsMenu: React.FC<Props> = ({ board }) => {
   const handlerOnDeleteClick = async () => {
     try {
       await deleteBoard(+board.id);
-
+      toastSuccess(`${board.title} deleted!`)
       dispatch(boardsSlice.init());
-    } catch (error) {}
+    } catch (error) {
+      toastError(`${error}`);
+    }
   };
 
   const handlerOnCreateClick = () => {

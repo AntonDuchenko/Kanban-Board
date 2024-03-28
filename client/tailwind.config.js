@@ -9,7 +9,11 @@ export default {
     transitionDuration: {
       DEFAULT: "300ms",
     },
-    extend: {},
+    extend: {
+      fontFamily: {
+        'sans': ['"Lato"'],
+      },
+    },
   },
   plugins: [require("tw-elements-react/dist/plugin.cjs")],
 };
