@@ -1,30 +1,34 @@
-# React + TypeScript + Vite
+# Клієнтська частина додатку
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Ця частина додатку відповідає за інтерфейс користувача та взаємодію з серверною частиною.
 
-Currently, two official plugins are available:
+## Використані технології
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **React:** JavaScript-бібліотека для побудови користувацького інтерфейсу.
+- **Redux:** Бібліотека управління станом застосунку.
+- **Axios:** Бібліотека для виконання HTTP-запитів до сервера.
 
-## Expanding the ESLint configuration
+## Основні компоненти
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- **TaskList:** Компонент для відображення списку завдань.
+- **TaskItem:** Компонент для відображення окремого завдання.
+- **TaskCreate:** Форма для створення нового завдання.
+- **TaskEdit:** Форма для оновлення інформації про завдання.
 
-- Configure the top-level `parserOptions` property like this:
+## Взаємодія з сервером
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+Для взаємодії з сервером використовується Axios. Запити надсилаються на наступні ендпоїнти:
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+- **GET /tasks:** Отримати список усіх завдань.
+- **GET /tasks/:id:** Отримати конкретне завдання за його ідентифікатором.
+- **POST /tasks:** Створити нове завдання.
+- **PATCH /tasks/:id:** Оновити інформацію про існуюче завдання.
+- **DELETE /tasks/:id:** Видалити завдання за його ідентифікатором.
+
+## Запуск додатку
+
+1. Відкрийте термінал.
+2. Перейдіть до директорії, де знаходиться клієнтський код.
+3. Виконатите команду `npm install` для встановлення всіх потрібних патеків.
+4. Виконайте команду `npm start` для запуску додатку.
+5. Після успішного запуску, додаток буде доступний за адресою [http://localhost:5173/](http://localhost:5173/).
