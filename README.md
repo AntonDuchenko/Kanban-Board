@@ -1,29 +1,33 @@
-# Проєкт "Kanban Board"
+# Project "Kanban Board"
 
-Цей проєкт складається з клієнтської та серверної частин, які спільно створюють додаток для управління завданнями.
+This project consists of client and server parts, which together create an application for task management.
 
-## Серверна частина
+## Server Part
 
-Серверна частина додатку відповідає за обробку запитів від клієнтської частини та взаємодію з базою даних.
+The server part of the application is responsible for handling requests from the client side and interacting with the database.
 
-### Використані технології
+### Used Technologies
 
-- **NestJS:** Прогресивний Node.js фреймворк для побудови ефективних та масштабованих серверних додатків.
-- **Prisma ORM:** Сучасний ORM для TypeScript та JavaScript, який забезпечує зручний доступ до бази даних.
-- **PostgreSQL:** Об'єктно-реляційна база даних для зберігання інформації.
-- **Docker:** Платформа для розробки, доставки та виконання програмного забезпечення за допомогою контейнеризації. Дозволяє упаковувати програми та їх залежності в контейнери для легкого розгортання та керування середовищами розробки та виробництва.
+- **NestJS:** A progressive Node.js framework for building efficient and scalable server-side applications.
+- **Prisma ORM:** A modern ORM for TypeScript and JavaScript, providing convenient access to the database.
+- **PostgreSQL:** An object-relational database for storing information.
+- **Docker:** A platform for developing, delivering, and running software using containerization. It allows packaging applications and their dependencies into containers for easy deployment and management of development and production environments.
 
-## Клієнтська частина
+## Client Part
 
-Клієнтська частина додатку відповідає за інтерфейс користувача та взаємодію з серверною частиною.
+The client part of the application is responsible for the user interface and interaction with the server part.
 
-### Використані технології
+### Used Technologies
 
-- **React:** JavaScript-бібліотека для побудови користувацького інтерфейсу.
-- **Redux:** Бібліотека управління станом застосунку.
-- **Axios:** Бібліотека для виконання HTTP-запитів до сервера.
+- **React:** A JavaScript library for building user interfaces.
+- **Redux:** A state management library for applications.
+- **Axios:** A library for making HTTP requests to the server.
 
-### Особливості
+### Features
 
-- **Реалтайм оновлення:** Зміни в завданнях відображаються в реальному часі.
-- **Дружній інтерфейс користувача:** Інтерфейс користувача дотримується принципів Material Design, що робить його зрозумілим та зручним у використанні.
+- **Real-time updates:** Changes in tasks are reflected in real-time.
+- **User-friendly interface:** The user interface follows Material Design principles, making it understandable and convenient to use.
+
+## Project Setup
+
+The setup for running this project is described in the README.md of each part, i.e., in the server and client respectively.
