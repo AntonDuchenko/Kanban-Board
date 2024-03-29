@@ -1,41 +1,41 @@
-# Серверна частина додатку
+# Server Part of the Application
 
-Ця частина додатку відповідає за обробку запитів від клієнтської частини та взаємодію з базою даних, яка знаходится в Docker контейнері.
+This part of the application is responsible for handling requests from the client side and interacting with the database, which is located in a Docker container.
 
-## Використані технології
+## Used Technologies
 
-- **NestJS:** Прогресивний Node.js фреймворк для побудови ефективних та масштабованих серверних додатків.
-- **Prisma ORM:** Сучасний ORM для TypeScript та JavaScript, який забезпечує зручний доступ до бази даних.
-- **PostgreSQL:** Об'єктно-реляційна база даних для зберігання інформації.
-- **Docker:** Платформа для розробки, доставки та виконання програмного забезпечення за допомогою контейнеризації. Дозволяє упаковувати програми та їх залежності в контейнери для легкого розгортання та керування середовищами розробки та виробництва.
+- **NestJS:** A progressive Node.js framework for building efficient and scalable server-side applications.
+- **Prisma ORM:** A modern ORM for TypeScript and JavaScript, providing convenient access to the database.
+- **PostgreSQL:** An object-relational database for storing information.
+- **Docker:** A platform for developing, delivering, and running software using containerization. It allows packaging applications and their dependencies into containers for easy deployment and management of development and production environments.
 
-## Ендпоїнти
+## Endpoints
 
 ### History
-- **GET /histories:** Отримати список усіх записів історії.
-- **GET /histories/:id:** Отримати конкретний запис історії за його ідентифікатором.
-- **POST /histories/:id:** Створити новий запис історії для конкретного завдання.
+- **GET /histories:** Get a list of all history records.
+- **GET /histories/:id:** Get a specific history record by its identifier.
+- **POST /histories/:id:** Create a new history record for a specific task.
 
 ### Tasks
-- **GET /tasks:** Отримати список усіх завдань.
-- **GET /tasks/:id:** Отримати конкретне завдання за його ідентифікатором.
-- **POST /tasks:** Створити нове завдання.
-- **PATCH /tasks/:id:** Часткове оновлення існуючого завдання за його ідентифікатором.
-- **DELETE /tasks/:id:** Видалити завдання за його ідентифікатором.
+- **GET /tasks:** Get a list of all tasks.
+- **GET /tasks/:id:** Get a specific task by its identifier.
+- **POST /tasks:** Create a new task.
+- **PATCH /tasks/:id:** Partially update an existing task by its identifier.
+- **DELETE /tasks/:id:** Delete a task by its identifier.
 
 ### Statuses
-- **GET /statuses:** Отримати список усіх статусів.
-- **GET /statuses/:id:** Отримати конкретний статус за його ідентифікатором.
-- **POST /statuses:** Створити новий статус.
-- **PATCH /statuses/:id:** Часткове оновлення існуючого статусу за його ідентифікатором.
-- **DELETE /statuses/:id:** Видалити статус за його ідентифікатором.
+- **GET /statuses:** Get a list of all statuses.
+- **GET /statuses/:id:** Get a specific status by its identifier.
+- **POST /statuses:** Create a new status.
+- **PATCH /statuses/:id:** Partially update an existing status by its identifier.
+- **DELETE /statuses/:id:** Delete a status by its identifier.
 
-# Запуск сервера
+# Running the Server
 
-1. Відкрийте термінал.
-2. Перейдіть до директорії, де знаходиться серверний код.
-3. Виконатите команду `npm install` для встановлення всіх потрібних патеків.
-4. Для створення файлу .env скористайтеся командою `npm run start:env`.
-5. Для запуску docker-compose скористайтеся командою `docker-compose up --build`.
-6. Відкрийте ще один термінал і виконайте команду `npm start` для запуску сервера.
-7. Після успішного запуску, сервер буде доступний за адресою [http://localhost:5000/](http://localhost:5000/).
+1. Open the terminal.
+2. Navigate to the directory where the server-side code is located.
+3. Run the command `npm install` to install all necessary dependencies.
+4. To create the .env file, use the command `npm run start:env`.
+5. To start docker-compose, use the command `docker-compose up --build`.
+6. Open another terminal and run the command `npm start` to start the server.
+7. After successful startup, the server will be available at [http://localhost:5000/](http://localhost:5000/).
