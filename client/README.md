@@ -1,34 +1,34 @@
-# Клієнтська частина додатку
+# Client Part of the Application
 
-Ця частина додатку відповідає за інтерфейс користувача та взаємодію з серверною частиною.
+This part of the application is responsible for the user interface and interaction with the server side.
 
-## Використані технології
+## Used Technologies
 
-- **React:** JavaScript-бібліотека для побудови користувацького інтерфейсу.
-- **Redux:** Бібліотека управління станом застосунку.
-- **Axios:** Бібліотека для виконання HTTP-запитів до сервера.
+- **React:** JavaScript library for building user interfaces.
+- **Redux:** State management library for applications.
+- **Axios:** Library for making HTTP requests to the server.
 
-## Основні компоненти
+## Main Components
 
-- **TaskList:** Компонент для відображення списку завдань.
-- **TaskItem:** Компонент для відображення окремого завдання.
-- **TaskCreate:** Форма для створення нового завдання.
-- **TaskEdit:** Форма для оновлення інформації про завдання.
+- **TaskList:** Component for displaying the list of tasks.
+- **TaskItem:** Component for displaying an individual task.
+- **TaskCreate:** Form for creating a new task.
+- **TaskEdit:** Form for updating task information.
 
-## Взаємодія з сервером
+## Interaction with the Server
 
-Для взаємодії з сервером використовується Axios. Запити надсилаються на наступні ендпоїнти:
+Axios is used for interaction with the server. Requests are sent to the following endpoints:
 
-- **GET /tasks:** Отримати список усіх завдань.
-- **GET /tasks/:id:** Отримати конкретне завдання за його ідентифікатором.
-- **POST /tasks:** Створити нове завдання.
-- **PATCH /tasks/:id:** Оновити інформацію про існуюче завдання.
-- **DELETE /tasks/:id:** Видалити завдання за його ідентифікатором.
+- **GET /tasks:** Get a list of all tasks.
+- **GET /tasks/:id:** Get a specific task by its identifier.
+- **POST /tasks:** Create a new task.
+- **PATCH /tasks/:id:** Update information about an existing task.
+- **DELETE /tasks/:id:** Delete a task by its identifier.
 
-## Запуск додатку
+## Running the Application
 
-1. Відкрийте термінал.
-2. Перейдіть до директорії, де знаходиться клієнтський код.
-3. Виконатите команду `npm install` для встановлення всіх потрібних патеків.
-4. Виконайте команду `npm start` для запуску додатку.
-5. Після успішного запуску, додаток буде доступний за адресою [http://localhost:5173/](http://localhost:5173/).
+1. Open the terminal.
+2. Navigate to the directory where the client-side code is located.
+3. Run the command `npm install` to install all necessary dependencies.
+4. Run the command `npm start` to start the application.
+5. After successful startup, the application will be available at [http://localhost:5173/](http://localhost:5173/).
