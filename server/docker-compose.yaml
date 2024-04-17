@@ -1,0 +1,11 @@
+version: '3.5'
+
+services:
+  bord_db:
+    container_name: bord_db
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_USER=admin
+    image: postgres:14-alpine3.19
