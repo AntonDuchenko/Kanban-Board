@@ -36,6 +36,7 @@ This part of the application is responsible for handling requests from the clien
 2. Navigate to the directory where the server-side code is located.
 3. Run the command `npm install` to install all necessary dependencies.
 4. To create the .env file, use the command `npm run start:env`.
-5. To start docker-compose, use the command `docker-compose up --build`.
-6. Open another terminal and run the command `npm start` to start the server.
-7. After successful startup, the server will be available at [http://localhost:5000/](http://localhost:5000/).
+5. To do migrations for DataBase use the command `npx prisma migrate dev --name init`.
+6. To start docker-compose, use the command `docker-compose up --build`.
+7. Open another terminal and run the command `npm start` to start the server.
+8. After successful startup, the server will be available at [http://localhost:5000/](http://localhost:5000/).
