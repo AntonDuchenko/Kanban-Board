@@ -11,7 +11,7 @@ import {
 } from "tw-elements-react";
 import { BoardContext } from "../../context/board";
 import { useAppDispatch } from "../../app/hooks";
-import { createBoard } from "../../api/boards";
+import { createBoard } from "../../api/statuses";
 import { toastSuccess } from "../../utils/toastSuccess";
 import * as boardsSlice from "../../features/boardsSlice";
 import { toastError } from "../../utils/toastError";
@@ -49,7 +49,7 @@ export default function ModalToCreate(): JSX.Element {
             <TEModalHeader>
               {/* <!--Modal title--> */}
               <h5 className="text-xl font-medium leading-normal text-neutral-800 dark:text-neutral-200">
-                Board name
+                Status name
               </h5>
               {/* <!--Close button--> */}
               <button
@@ -84,7 +84,7 @@ export default function ModalToCreate(): JSX.Element {
                     required
                     type="text"
                     id="exampleFormControlInputText"
-                    label="Board name"
+                    label="Status name"
                   ></TEInput>
                 </div>
               </form>
@@ -112,7 +112,7 @@ export default function ModalToCreate(): JSX.Element {
             font-medium rounded-lg text-sm w-full sm:w-auto 
             px-10 py-2.5 text-center"
                 >
-                  Create task
+                  Create status
                 </button>
               </TERipple>
             </TEModalFooter>

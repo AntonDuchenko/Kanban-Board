@@ -13,7 +13,7 @@ import { useState } from "react";
 import { deleteTask } from "../../api/tasks";
 import { actions as editActions } from "../../features/editedTaskSlice";
 import { createHistory } from "../../api/history";
-import { getBoardById } from "../../api/boards";
+import { getBoardById } from "../../api/statuses";
 import { toastSuccess } from "../../utils/toastSuccess";
 import { toastError } from "../../utils/toastError";
 

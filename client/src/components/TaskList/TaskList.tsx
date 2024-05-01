@@ -3,7 +3,7 @@ import plusBlack from "../../assets/plus-black.svg";
 import { DropDownDotsMenu } from "../DropDownDotsMenu/DropDownDotsMenu";
 import { TaskCard } from "../TaskCard/TaskCard";
 import classNames from "classnames";
-import { updateBoard } from "../../api/boards";
+import { updateBoard } from "../../api/statuses";
 import { useAppDispatch } from "../../app/hooks";
 import * as boardsSlice from "../../features/boardsSlice";
 import { BoardContext } from "../../context/board";

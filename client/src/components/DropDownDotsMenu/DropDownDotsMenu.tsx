@@ -12,7 +12,7 @@ import {
 } from "tw-elements-react";
 import { useContext } from "react";
 import { BoardContext } from "../../context/board";
-import { deleteBoard } from '../../api/boards';
+import { deleteBoard } from "../../api/statuses";
 import { toastSuccess } from '../../utils/toastSuccess';
 import { toastError } from '../../utils/toastError';
 

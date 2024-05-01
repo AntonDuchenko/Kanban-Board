@@ -9,4 +9,6 @@ type BoardContext = {
   setStatus: React.Dispatch<React.SetStateAction<Status | null>>;
   isEditing: number;
   setIsEditing: React.Dispatch<React.SetStateAction<number>>;
+  isMenuOpen: boolean;
+  setIsMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };

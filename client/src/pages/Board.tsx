@@ -10,9 +10,10 @@ import ModalToCreate from '../components/ModalToCreate/ModalToCreate';
 import TaskInfo from '../components/TaskInfo/TaskInfo';
 import { TaskEdit } from '../components/TaskEdit/TaskEdit';
 import History from '../components/History/History';
+import { BurgerMenu } from '../components/BurgerMenu/BurgerMenu';
 
 export const BoardPage = () => {
-  const { isCreateTask, isOpen, isCreate } = useContext(BoardContext);
+  const { isCreateTask, isOpen, isCreate, isMenuOpen } = useContext(BoardContext);
 
   const dispatch = useAppDispatch();
   const choosedTask = useAppSelector((state) => state.choosedTask);
@@ -31,6 +32,7 @@ export const BoardPage = () => {
           <Board />
         </div>
 
+        {isMenuOpen && <BurgerMenu />}
         {isCreateTask && <TaskCreate />}
         {isCreate && <ModalToCreate />}
         {choosedTask && <TaskInfo />}

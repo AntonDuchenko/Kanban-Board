@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getBoards } from '../api/boards';
+import { getBoards } from "../api/statuses";
 
 interface InitialState {
   boards: Board[];
