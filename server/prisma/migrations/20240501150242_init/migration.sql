@@ -44,12 +44,6 @@ CREATE TABLE "Task" (
 -- CreateIndex
 CREATE UNIQUE INDEX "Board_title_key" ON "Board"("title");
 
--- CreateIndex
-CREATE UNIQUE INDEX "Status_title_key" ON "Status"("title");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Task_name_key" ON "Task"("name");
-
 -- AddForeignKey
 ALTER TABLE "Status" ADD CONSTRAINT "Status_boardId_fkey" FOREIGN KEY ("boardId") REFERENCES "Board"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 

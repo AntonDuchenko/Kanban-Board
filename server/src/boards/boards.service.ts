@@ -1,19 +1,30 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@nestjs/common';
 import { Board } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
+import { StatusesService } from 'src/statuses/statuses.service';
 
 @Injectable()
 export class BoardsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private readonly StatusesService: StatusesService,
+    private prisma: PrismaService) {}
 
   async getBoards() {
-    return this.prisma.board.findMany();
+    return this.prisma.board.findMany({
+      include: {
+        statuses: true,
+      },
+    });
   }
 
   async getBoardById(id: number) {
     return this.prisma.board.findUnique({
       where: {
         id,
+      },
+      include: {
+        statuses: true,
       },
     });
   }
@@ -23,6 +34,7 @@ export class BoardsService {
   }
 
   async deleteBoard(id: number) {
+    await this.StatusesService.deleteStatusesMany(id);
     return this.prisma.board.delete({
       where: {
         id,

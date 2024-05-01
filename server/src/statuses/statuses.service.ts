@@ -51,6 +51,28 @@ export class StatusesService {
     });
   }
 
+  async deleteStatusesMany(boardId: number) {
+    const statuses = await this.prisma.status.findMany({
+      where: {
+        boardId,
+      },
+    });
+
+    if (!statuses) {
+      throw new NotFoundException('Statuses not found!');
+    }
+
+    for (const status of statuses) {
+      await this.TasksService.deleteTasksMany(status.id);
+    }
+
+    return this.prisma.status.deleteMany({
+      where: {
+        boardId,
+      },
+    });
+  }
+
   async updateStatus(id: number, data) {
     await this.getStatusById(id);
 
