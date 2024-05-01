@@ -13,6 +13,12 @@ enum Priority {
   High
 }
 
+model Board {
+  id       Int      @id @default(autoincrement())
+  title    String @unique
+  statuses Status[]
+}
+
 model History {
   id          Int      @id @default(autoincrement())
   action      String
@@ -23,13 +29,15 @@ model History {
 
 model Status {
   id      Int    @id @default(autoincrement())
-  title   String @unique
+  title   String
   tasks   Task[]
+  boardId Int
+  board   Board @relation(fields: [boardId], references: [id])
 }
 
 model Task {
   id          Int      @id @default(autoincrement())
-  name        String   @unique
+  name        String
   description String
   dueDate     DateTime
   priority    Priority

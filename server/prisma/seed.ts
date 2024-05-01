@@ -2,19 +2,37 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
+  await prisma.board.createMany({
+    data: [
+      {
+        title: 'Frontend',
+      },
+      {
+        title: 'Backend',
+      },
+      {
+        title: 'Fullstack',
+      },
+    ],
+  });
+
   await prisma.status.createMany({
     data: [
       {
         title: 'To Do',
+        boardId: 1,
       },
       {
         title: 'Planned',
+        boardId: 1,
       },
       {
         title: 'In Progress',
+        boardId: 1,
       },
       {
         title: 'Closed',
+        boardId: 1,
       },
     ],
   });

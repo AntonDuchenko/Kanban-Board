@@ -2,6 +2,14 @@
 CREATE TYPE "Priority" AS ENUM ('Low', 'Medium', 'High');
 
 -- CreateTable
+CREATE TABLE "Board" (
+    "id" SERIAL NOT NULL,
+    "title" TEXT NOT NULL,
+
+    CONSTRAINT "Board_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "History" (
     "id" SERIAL NOT NULL,
     "action" TEXT NOT NULL,
@@ -16,6 +24,7 @@ CREATE TABLE "History" (
 CREATE TABLE "Status" (
     "id" SERIAL NOT NULL,
     "title" TEXT NOT NULL,
+    "boardId" INTEGER NOT NULL,
 
     CONSTRAINT "Status_pkey" PRIMARY KEY ("id")
 );
@@ -33,10 +42,16 @@ CREATE TABLE "Task" (
 );
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Board_title_key" ON "Board"("title");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Status_title_key" ON "Status"("title");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Task_name_key" ON "Task"("name");
+
+-- AddForeignKey
+ALTER TABLE "Status" ADD CONSTRAINT "Status_boardId_fkey" FOREIGN KEY ("boardId") REFERENCES "Board"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Task" ADD CONSTRAINT "Task_statusId_fkey" FOREIGN KEY ("statusId") REFERENCES "Status"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
