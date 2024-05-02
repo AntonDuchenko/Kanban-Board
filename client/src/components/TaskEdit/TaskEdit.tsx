@@ -18,12 +18,13 @@ import { formateDateToDB } from "../../utils/formateDateToDB";
 import { createHistory } from "../../api/history";
 import { toastSuccess } from "../../utils/toastSuccess";
 import { actions as editActions } from "../../features/editedTaskSlice";
-import * as boardsSlice from "../../features/boardsSlice";
+import * as statusesSlice from "../../features/statusesSlice";
 import { toastError } from "../../utils/toastError";
 
 export const TaskEdit = () => {
   const dispatch = useAppDispatch();
   const editingTask = useAppSelector((state) => state.editedTask) as Task;
+  const activeBoard = useAppSelector((state) => state.boards.activeBoard);
 
   const removeEditingTask = () => dispatch(editActions.removeTask());
 
@@ -89,7 +90,7 @@ export const TaskEdit = () => {
       toastSuccess(`Task ${editingTask.name} was updated!`);
 
       dispatch(editActions.removeTask());
-      await dispatch(boardsSlice.init());
+      await dispatch(statusesSlice.init(activeBoard?.id!));
     } catch (error) {
       toastError(`${error}`);
     }

@@ -10,16 +10,18 @@ import {
   TEInput,
 } from "tw-elements-react";
 import { BoardContext } from "../../context/board";
-import { useAppDispatch } from "../../app/hooks";
-import { createBoard } from "../../api/statuses";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { createStatus} from "../../api/statuses";
 import { toastSuccess } from "../../utils/toastSuccess";
-import * as boardsSlice from "../../features/boardsSlice";
+import * as statusesSlice from "../../features/statusesSlice";
 import { toastError } from "../../utils/toastError";
 
 export default function ModalToCreate(): JSX.Element {
   const { isCreate, setIsCreate } = useContext(BoardContext);
 
   const [title, setTitle] = useState("");
+  const activeBoard = useAppSelector((state) => state.boards.activeBoard);
+
   const handlerOnCreateClick = (event: React.ChangeEvent<HTMLInputElement>) =>
     setTitle(event.target.value);
   const dispatch = useAppDispatch();
@@ -31,10 +33,10 @@ export default function ModalToCreate(): JSX.Element {
   ) => {
     event.preventDefault();
     try {
-      const newBoard = await createBoard(title);
+      const newBoard = await createStatus(title, activeBoard?.id!);
       toastSuccess(`${newBoard.title} board created!`);
       setIsCreate(false);
-      await dispatch(boardsSlice.init());
+      dispatch(statusesSlice.init(activeBoard?.id!));
     } catch (error) {
       toastError(`${error}`);
     }

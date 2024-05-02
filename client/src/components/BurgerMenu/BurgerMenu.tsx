@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import {
   TEModal,
   TEModalBody,
@@ -7,11 +7,22 @@ import {
   TEModalHeader,
 } from "tw-elements-react";
 import { BoardContext } from "../../context/board";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import * as boardsSlice from "../../features/boardsSlice";
+import editIcon from "../../assets/edit.svg";
+import deleteIcon from "../../assets/delete.svg";
+import * as statusesSlice from "../../features/statusesSlice";
 
 export const BurgerMenu = () => {
   const { isMenuOpen, setIsMenuOpen } = useContext(BoardContext);
-  console.log(isMenuOpen);
-  
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(boardsSlice.init());
+  }, []);
+
+  const boards = useAppSelector((state) => state.boards.boards);
+
   return (
     <TEModal show={isMenuOpen} setShow={setIsMenuOpen}>
       <TEModalDialog
@@ -52,7 +63,41 @@ export const BurgerMenu = () => {
             </button>
           </TEModalHeader>
           {/* <!--Modal body--> */}
-          <TEModalBody>Modal body text goes here.</TEModalBody>
+          <TEModalBody className="flex flex-col gap-3">
+            {boards.map((board) => (
+              <button
+                onClick={() => {
+                  dispatch(statusesSlice.init(board.id));
+                  dispatch(boardsSlice.setActiveBoard(board));
+                  setIsMenuOpen(false);
+                }}
+                type="button"
+                key={board.id}
+                className="border border-solid border-dark flex justify-between items-center
+                rounded-lg w-full pl-3 hover:bg-slate-200 transition-all text-xl"
+              >
+                {board.title}
+                <div className="flex gap-1">
+                  <button
+                    type="button"
+                    className="hover:bg-slate-400 transition-all p-3 rounded-lg"
+                  >
+                    <img src={editIcon} alt="edit-icon" className="w-[24px]" />
+                  </button>
+                  <button
+                    type="button"
+                    className="hover:bg-slate-400 transition-all p-3 rounded-lg"
+                  >
+                    <img
+                      src={deleteIcon}
+                      alt="delete-icon"
+                      className="w-[24px]"
+                    />
+                  </button>
+                </div>
+              </button>
+            ))}
+          </TEModalBody>
         </TEModalContent>
       </TEModalDialog>
     </TEModal>

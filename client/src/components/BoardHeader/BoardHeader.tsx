@@ -3,16 +3,16 @@ import historyLogo from "../../assets/history.svg";
 import plusLogo from "../../assets/plus.svg";
 import burgerMenu from "../../assets/burger-menu.svg";
 import { BoardContext } from "../../context/board";
+import { useAppSelector } from '../../app/hooks';
 
 export const BoardHeader = () => {
-  const { setIsOpen, setIsCreate, setIsMenuOpen, isMenuOpen } = useContext(BoardContext);
-  console.log(isMenuOpen);
-  
+  const { setIsOpen, setIsCreate, setIsMenuOpen } = useContext(BoardContext);
+  const activeBoard = useAppSelector((state) => state.boards.activeBoard);
 
   return (
     <div className="h-[60px] flex justify-between py-[10px] border-b-black border-b">
       <h1 className="capitalize text-2xl sm:text-4xl font-bold">
-        My task board
+        {activeBoard?.title || "Select a board"}
       </h1>
       <div className="flex gap-2">
         <button

@@ -1,5 +1,5 @@
 type Board = {
-  id: number,
-  title: string,
-  tasks: Task[],
-}
+  id: number;
+  title: string;
+  statuses?: Status[];
+};

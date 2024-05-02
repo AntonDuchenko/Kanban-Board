@@ -25,6 +25,17 @@ export class StatusesService {
     return status;
   }
 
+  async getStatusesByBoardId(boardId: number) {
+    return this.prisma.status.findMany({
+      where: {
+        boardId,
+      },
+      include: {
+        tasks: true,
+      },
+    });
+  }
+
   async getStatuses() {
     return this.prisma.status.findMany({
       include: {

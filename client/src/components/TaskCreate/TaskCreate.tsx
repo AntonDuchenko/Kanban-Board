@@ -13,16 +13,17 @@ import {
 } from "tw-elements-react";
 import { BoardContext } from "../../context/board";
 import { createTask } from "../../api/tasks";
-import { useAppDispatch } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { createHistory } from "../../api/history";
 import { toastSuccess } from "../../utils/toastSuccess";
-import * as boardsSlice from "../../features/boardsSlice";
+import * as statusesSlice from "../../features/statusesSlice";
 import { toastError } from "../../utils/toastError";
 
 export default function TaskCreate(): JSX.Element {
   const { setIsCreateTask, isCreateTask, status, setStatus } =
     useContext(BoardContext);
   const dispatch = useAppDispatch();
+  const activeBoard = useAppSelector((state) => state.boards.activeBoard);
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -71,7 +72,7 @@ export default function TaskCreate(): JSX.Element {
       toastSuccess(`${createdTask.name} task created!`);
 
       setIsCreateTask(false);
-      await dispatch(boardsSlice.init());
+      await dispatch(statusesSlice.init(activeBoard?.id!));
       setStatus(null);
     } catch (error) {
       toastError(`${error}`);

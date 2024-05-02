@@ -1,7 +1,7 @@
 import { createHistory } from '../../api/history';
 import { updateTask } from "../../api/tasks";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import * as boardsSlice from "../../features/boardsSlice";
+import * as statusesSlice from "../../features/statusesSlice";
 import {
   TEDropdown,
   TEDropdownToggle,
@@ -9,33 +9,36 @@ import {
   TEDropdownItem,
   TERipple,
 } from "tw-elements-react";
-import { toastError } from '../../utils/toastError';
-import { toastSuccess } from '../../utils/toastSuccess';
+import { toastError } from "../../utils/toastError";
+import { toastSuccess } from "../../utils/toastSuccess";
 
 interface Props {
   task: Task;
 }
 
 export const DropDownMenu: React.FC<Props> = ({ task }) => {
-  const boards = useAppSelector((state) => state.boards.boards);
+  const statuses = useAppSelector((state) => state.statuses.statuses);
   const dispatch = useAppDispatch();
+  const activeBoard = useAppSelector((state) => state.boards.activeBoard);
 
-  const prevStatus = boards.find(board => board.id === task.statusId);
-  const filteredBoards = boards.filter(board => board.id !== task.statusId);
+  const prevStatus = statuses.find((board) => board.id === task.statusId);
+  const filteredBoards = statuses.filter((board) => board.id !== task.statusId);
 
-  const handlerOnChangeStatus = async (board: Board) => {
+  const handlerOnChangeStatus = async (board: Status) => {
+    console.log("board", board);
+    
     try {
       await updateTask(task.id, { statusId: board.id });
 
-    createHistory(task.id, {
-      action: "Change status",
-      description: [`${task.name}`, `${prevStatus?.title}`, `${board.title}`],
-      createAt: new Date().toISOString(),
-    });
+      createHistory(task.id, {
+        action: "Change status",
+        description: [`${task.name}`, `${prevStatus?.title}`, `${board.title}`],
+        createAt: new Date().toISOString(),
+      });
 
-    toastSuccess(`Status of task ${task.name} was changed!`);
+      toastSuccess(`Status of task ${task.name} was changed!`);
 
-    await dispatch(boardsSlice.init());
+      await dispatch(statusesSlice.init(activeBoard?.id!));
     } catch (error) {
       toastError(`${error}`);
     }

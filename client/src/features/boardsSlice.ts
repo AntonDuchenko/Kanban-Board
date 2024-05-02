@@ -1,22 +1,28 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getBoards } from "../api/statuses";
+import { getBoards } from "../api/boards";
 
-interface InitialState {
-  boards: Board[];
-  loading: boolean,
-  error: string,
+interface InitialBoards {
+  boards: Status[];
+  activeBoard: Board | null;
+  loading: boolean;
+  error: string;
 }
 
-const initialState: InitialState = {
+const InitialState: InitialBoards = {
   boards: [],
+  activeBoard: null,
   loading: true,
   error: "",
 };
 
 const BoardsSlice = createSlice({
   name: "boards",
-  initialState,
-  reducers: {},
+  initialState: InitialState,
+  reducers: {
+    setActiveBoard: (state, action) => {
+      state.activeBoard = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(init.pending, (state) => {
       state.loading = true;
@@ -32,6 +38,7 @@ const BoardsSlice = createSlice({
   },
 });
 
+export const { setActiveBoard } = BoardsSlice.actions;
 export default BoardsSlice.reducer;
 
 export const init = createAsyncThunk("boards/fetch", async () => {

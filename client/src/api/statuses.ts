@@ -1,55 +1,67 @@
 import axios from "axios";
 import { BASE_URL } from "../variable";
 
-export const getBoardById = async (id: number) => {
+export const getStatusById = async (id: number) => {
   try {
-    const response = await axios.get<Board>(`${BASE_URL}/statuses/${id}`);
+    const response = await axios.get<Status>(`${BASE_URL}/statuses/${id}`);
 
     return response.data;
   } catch (error) {
-    throw new Error("Unable to get ");
+    throw new Error("Unable to get status by id");
+  }
+};
+
+export const getStatusesByBoardId = async (boardId: number) => {
+  try {
+    const response = await axios.get<Status[]>(
+      `${BASE_URL}/statuses/board/${boardId}`
+    );
+
+    return response.data;
+  } catch (error) {
+    throw new Error("Unable to get statuses");
   }
 }
 
-export const getBoards = async () => {
+export const getStatuses = async () => {
   try {
-    const response = await axios.get<Board[]>(`${BASE_URL}/statuses`);
+    const response = await axios.get<Status[]>(`${BASE_URL}/statuses`);
 
     return response.data;
   } catch (error) {
-    throw new Error("Unable to load boards");
+    throw new Error("Unable to load statuses");
   }
 };
 
-export const deleteBoard = async (id: number) => {
+export const deleteStatus = async (id: number) => {
   try {
     await axios.delete(`${BASE_URL}/statuses/${id}`);
   } catch (error) {
-    throw new Error("Unable to delete board");
+    throw new Error("Unable to delete status");
   }
 };
 
-export const createBoard = async (title: string) => {
+export const createStatus = async (title: string, boardId: number) => {
   try {
-    const response = await axios.post<Board>(`${BASE_URL}/statuses`, {
+    const response = await axios.post<Status>(`${BASE_URL}/statuses`, {
       title,
+      boardId,
     });
 
     return response.data;
   } catch (error) {
-    throw new Error("Unable to create board");
+    throw new Error("Unable to create status");
   }
 };
 
-export const updateBoard = async (id: number, newTitle: string) => {
+export const updateStatus = async (id: number, newTitle: string) => {
   try {
-    const response = await axios.patch<Board>(`${BASE_URL}/statuses/${id}`, {
+    const response = await axios.patch<Status>(`${BASE_URL}/statuses/${id}`, {
       title: newTitle,
-    })
+    });
 
     return response.data;
   } catch (error) {
-    throw new Error("Unadle to update board");
-    
+    throw new Error("Unadle to update status");
   }
 };

@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@nestjs/common';
-import { Board } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 import { StatusesService } from 'src/statuses/statuses.service';
 
@@ -11,11 +10,7 @@ export class BoardsService {
     private prisma: PrismaService) {}
 
   async getBoards() {
-    return this.prisma.board.findMany({
-      include: {
-        statuses: true,
-      },
-    });
+    return this.prisma.board.findMany();
   }
 
   async getBoardById(id: number) {
@@ -23,14 +18,11 @@ export class BoardsService {
       where: {
         id,
       },
-      include: {
-        statuses: true,
-      },
     });
   }
 
-  async createBoard(data: Board) {
-    return this.prisma.board.create({ data });
+  async createBoard(title: string) {
+    return this.prisma.board.create({ data: { title }});
   }
 
   async deleteBoard(id: number) {

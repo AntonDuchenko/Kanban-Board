@@ -1,5 +1,5 @@
-import { useAppDispatch } from "../../app/hooks";
-import * as boardsSlice from "../../features/boardsSlice";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import * as statusesSlice from "../../features/statusesSlice";
 import editIcon from "../../assets/edit.svg";
 import plusBlackIcon from "../../assets/plus-black.svg";
 import deleteIcon from "../../assets/delete.svg";
@@ -12,9 +12,9 @@ import {
 } from "tw-elements-react";
 import { useContext } from "react";
 import { BoardContext } from "../../context/board";
-import { deleteBoard } from "../../api/statuses";
-import { toastSuccess } from '../../utils/toastSuccess';
-import { toastError } from '../../utils/toastError';
+import { deleteStatus } from "../../api/statuses";
+import { toastSuccess } from "../../utils/toastSuccess";
+import { toastError } from "../../utils/toastError";
 
 interface Props {
   board: Status;
@@ -24,6 +24,7 @@ export const DropDownDotsMenu: React.FC<Props> = ({ board }) => {
   const dispatch = useAppDispatch();
 
   const { setIsCreateTask, setStatus, setIsEditing } = useContext(BoardContext);
+  const activeBoard = useAppSelector((state) => state.boards.activeBoard);
 
   const handlerOnEditClick = () => {
     setIsEditing(board.id);
@@ -31,9 +32,9 @@ export const DropDownDotsMenu: React.FC<Props> = ({ board }) => {
 
   const handlerOnDeleteClick = async () => {
     try {
-      await deleteBoard(+board.id);
-      toastSuccess(`${board.title} deleted!`)
-      dispatch(boardsSlice.init());
+      await deleteStatus(+board.id);
+      toastSuccess(`${board.title} deleted!`);
+      dispatch(statusesSlice.init(activeBoard?.id!));
     } catch (error) {
       toastError(`${error}`);
     }

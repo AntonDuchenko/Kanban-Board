@@ -1,5 +1,5 @@
-import { useAppDispatch } from "../../app/hooks";
-import * as boardsSlice from "../../features/boardsSlice";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import * as statusesSlice from "../../features/statusesSlice";
 import editIcon from "../../assets/edit.svg";
 import deleteIcon from "../../assets/delete.svg";
 import {
@@ -13,7 +13,7 @@ import { useState } from "react";
 import { deleteTask } from "../../api/tasks";
 import { actions as editActions } from "../../features/editedTaskSlice";
 import { createHistory } from "../../api/history";
-import { getBoardById } from "../../api/statuses";
+import { getStatusById } from "../../api/statuses";
 import { toastSuccess } from "../../utils/toastSuccess";
 import { toastError } from "../../utils/toastError";
 
@@ -24,6 +24,7 @@ interface Props {
 export const TaskDropDownMenuDots: React.FC<Props> = ({ task }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const dispatch = useAppDispatch();
+  const activeBoard = useAppSelector((state) => state.boards.activeBoard);
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -37,14 +38,14 @@ export const TaskDropDownMenuDots: React.FC<Props> = ({ task }) => {
   const handlerOnDeleteClick = async () => {
     try {
       await deleteTask(task.id);
-      const board = await getBoardById(task.statusId);
+      const board = await getStatusById(task.statusId);
       await createHistory(task.id, {
         action: "Deleted",
         description: [`${task.name}`, `${board.title}`],
         createAt: new Date().toISOString(),
       });
       toastSuccess(`Task ${task.name} deleted!`);
-      await dispatch(boardsSlice.init());
+      await dispatch(statusesSlice.init(activeBoard?.id!));
     } catch (error) {
       toastError(`${error}`);
     }

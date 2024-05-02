@@ -19,6 +19,11 @@ export class StatusesController {
     return this.statusesService.getStatusById(+id);
   }
 
+  @Get('board/:id')
+  async getByBoardId(@Param('id') id: string) {
+    return this.statusesService.getStatusesByBoardId(+id);
+  }
+
   @Get()
   async getStatuses() {
     return this.statusesService.getStatuses();

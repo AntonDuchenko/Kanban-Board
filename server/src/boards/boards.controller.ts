@@ -1,6 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { BoardsService } from './boards.service';
-import { Board } from '@prisma/client';
 
 @Controller('api/boards')
 export class BoardsController {
@@ -17,7 +16,7 @@ export class BoardsController {
   }
 
   @Post()
-  async createBoard(@Body() boardInfo: Board){
+  async createBoard(@Body() boardInfo: string){
     return this.boardsService.createBoard(boardInfo);
   }
 

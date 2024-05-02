@@ -6,4 +6,5 @@ type Task = {
   priority: string,
   status: Status,
   statusId: number,
+  boardId?: number,
 }

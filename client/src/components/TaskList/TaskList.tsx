@@ -3,35 +3,36 @@ import plusBlack from "../../assets/plus-black.svg";
 import { DropDownDotsMenu } from "../DropDownDotsMenu/DropDownDotsMenu";
 import { TaskCard } from "../TaskCard/TaskCard";
 import classNames from "classnames";
-import { updateBoard } from "../../api/statuses";
-import { useAppDispatch } from "../../app/hooks";
-import * as boardsSlice from "../../features/boardsSlice";
+import { updateStatus } from "../../api/statuses";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import * as statusesSlice from "../../features/statusesSlice";
 import { BoardContext } from "../../context/board";
 import { toastSuccess } from "../../utils/toastSuccess";
 import { toastError } from "../../utils/toastError";
 import { TEInput } from "tw-elements-react";
 
 interface Props {
-  board: Board;
+  board: Status;
 }
 
 export const TaskList: React.FC<Props> = ({ board }) => {
   const [newTitle, setNewTitle] = useState(board.title);
   const [tasks, setTasks] = useState<Task[]>([]);
   const dispatch = useAppDispatch();
+  const activeBoard = useAppSelector((state) => state.boards.activeBoard);
 
   const { setIsCreateTask, setStatus, setIsEditing, isEditing } =
     useContext(BoardContext);
 
-  useEffect(() => setTasks(board.tasks), [board]);
+  useEffect(() => setTasks(board.tasks || []), [board]);
 
   const handlerOnSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     try {
       event.preventDefault();
-      await updateBoard(+board.id, newTitle);
+      await updateStatus(+board.id, newTitle);
       setIsEditing(0);
       toastSuccess(`${board.title} was updated!`);
-      await dispatch(boardsSlice.init());
+      await dispatch(statusesSlice.init(activeBoard?.id!));
     } catch (error) {
       toastError(`${error}`);
     }
@@ -72,7 +73,7 @@ export const TaskList: React.FC<Props> = ({ board }) => {
           </form>
         )}
         <div className="flex gap-1 justify-center items-center">
-          <p>{board.tasks.length}</p>
+          <p>{board.tasks?.length}</p>
           <DropDownDotsMenu board={board} />
         </div>
       </div>
