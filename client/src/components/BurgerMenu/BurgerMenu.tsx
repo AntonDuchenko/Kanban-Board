@@ -12,6 +12,7 @@ import * as boardsSlice from "../../features/boardsSlice";
 import editIcon from "../../assets/edit.svg";
 import deleteIcon from "../../assets/delete.svg";
 import * as statusesSlice from "../../features/statusesSlice";
+import { deleteBoard } from '../../api/boards';
 
 export const BurgerMenu = () => {
   const { isMenuOpen, setIsMenuOpen } = useContext(BoardContext);
@@ -65,37 +66,45 @@ export const BurgerMenu = () => {
           {/* <!--Modal body--> */}
           <TEModalBody className="flex flex-col gap-3">
             {boards.map((board) => (
-              <button
-                onClick={() => {
-                  dispatch(statusesSlice.init(board.id));
-                  dispatch(boardsSlice.setActiveBoard(board));
-                  setIsMenuOpen(false);
-                }}
-                type="button"
+              <div
                 key={board.id}
                 className="border border-solid border-dark flex justify-between items-center
-                rounded-lg w-full pl-3 hover:bg-slate-200 transition-all text-xl"
+      rounded-lg w-full pl-3 hover:bg-slate-200 transition-all text-xl min-h-[50px]"
               >
-                {board.title}
+                <button
+                  className="w-full text-start h-[48px]"
+                  onClick={() => {
+                    dispatch(statusesSlice.init(board.id));
+                    dispatch(boardsSlice.setActiveBoard(board));
+                    setIsMenuOpen(false);
+                  }}
+                  type="button"
+                >
+                  {board.title}
+                </button>
                 <div className="flex gap-1">
                   <button
                     type="button"
                     className="hover:bg-slate-400 transition-all p-3 rounded-lg"
                   >
-                    <img src={editIcon} alt="edit-icon" className="w-[24px]" />
+                    <img src={editIcon} alt="edit-icon" className="w-[35px]" />
                   </button>
                   <button
+                    onClick={async () => {
+                      await deleteBoard(board.id);
+                      dispatch(boardsSlice.init());
+                    }}
                     type="button"
                     className="hover:bg-slate-400 transition-all p-3 rounded-lg"
                   >
                     <img
                       src={deleteIcon}
                       alt="delete-icon"
-                      className="w-[24px]"
+                      className="w-[35px]"
                     />
                   </button>
                 </div>
-              </button>
+              </div>
             ))}
           </TEModalBody>
         </TEModalContent>

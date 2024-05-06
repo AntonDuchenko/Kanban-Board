@@ -10,6 +10,7 @@ import { BoardContext } from "../../context/board";
 import { toastSuccess } from "../../utils/toastSuccess";
 import { toastError } from "../../utils/toastError";
 import { TEInput } from "tw-elements-react";
+import { Droppable } from "react-beautiful-dnd";
 
 interface Props {
   board: Status;
@@ -49,7 +50,7 @@ export const TaskList: React.FC<Props> = ({ board }) => {
 
   return (
     <div
-      className="pt-5 flex flex-col gap-4 col-span-full 
+      className="pt-5 flex flex-col gap-4 col-span-full min-h-[200px]
     sm:col-span-3 lg:col-span-2 xl:col-span-3 max-h-[700px] overflow-y-auto"
     >
       <div
@@ -69,10 +70,10 @@ export const TaskList: React.FC<Props> = ({ board }) => {
               type="text"
               id="exampleFormControlInputText"
               label="Task name"
-            ></TEInput>
+            />
           </form>
         )}
-        <div className="flex gap-1 justify-center items-center">
+        <div className="flex gap-1 justify-center items-center h-[39px]">
           <p>{board.tasks?.length}</p>
           <DropDownDotsMenu board={board} />
         </div>
@@ -87,9 +88,20 @@ export const TaskList: React.FC<Props> = ({ board }) => {
         Add new card
       </button>
 
-      {tasks.map((task) => (
-        <TaskCard task={task} key={task.id} />
-      ))}
+      <Droppable droppableId={board.id.toString()}>
+        {(provided) => (
+          <div
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+            className="flex flex-col gap-4 h-svh"
+          >
+            {tasks.map((task, index) => (
+              <TaskCard task={task} key={task.id} index={index} />
+            ))}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
     </div>
   );
 };

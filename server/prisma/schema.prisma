@@ -31,8 +31,9 @@ model Status {
   id      Int    @id @default(autoincrement())
   title   String
   tasks   Task[]
+  createdAt DateTime @default(now())
   boardId Int
-  board   Board @relation(fields: [boardId], references: [id])
+  board   Board @relation(fields: [boardId], references: [id], onDelete: Cascade)
 }
 
 model Task {
@@ -42,5 +43,5 @@ model Task {
   dueDate     DateTime
   priority    Priority
   statusId    Int
-  status      Status   @relation(fields: [statusId], references: [id])
+  status      Status   @relation(fields: [statusId], references: [id], onDelete: Cascade)
 }

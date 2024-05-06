@@ -21,18 +21,22 @@ async function main() {
       {
         title: 'To Do',
         boardId: 1,
+        createdAt: '2024-01-21T09:00:00Z',
       },
       {
         title: 'Planned',
         boardId: 1,
+        createdAt: '2024-02-21T09:00:00Z',
       },
       {
         title: 'In Progress',
         boardId: 1,
+        createdAt: '2024-05-21T09:00:00Z',
       },
       {
         title: 'Closed',
         boardId: 1,
+        createdAt: '2024-04-21T09:00:00Z',
       },
     ],
   });

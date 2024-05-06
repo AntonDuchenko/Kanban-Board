@@ -70,7 +70,7 @@ export default function TaskInfo(): JSX.Element {
               </button>
             </TEModalHeader>
             {/* <!--Modal body--> */}
-            <TEModalBody className="!p-0">
+            <TEModalBody className="!p-0 overflow-auto">
               <div className="flex rounded-b-lg h-full flex-col lg:flex-row">
                 <div className="w-full p-7 flex flex-col gap-6 lg:w-[60%]">
                   <div className="flex justify-between items-start">

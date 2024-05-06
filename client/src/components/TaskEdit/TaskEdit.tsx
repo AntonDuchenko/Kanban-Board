@@ -20,6 +20,7 @@ import { toastSuccess } from "../../utils/toastSuccess";
 import { actions as editActions } from "../../features/editedTaskSlice";
 import * as statusesSlice from "../../features/statusesSlice";
 import { toastError } from "../../utils/toastError";
+import { SelectData } from 'tw-elements-react/dist/types/forms/Select/types';
 
 export const TaskEdit = () => {
   const dispatch = useAppDispatch();
@@ -49,8 +50,10 @@ export const TaskEdit = () => {
   ) => setNewDescription(event.target.value);
 
   const handlerOnChangeDPriority = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => setNewPriority(event.target.value);
+    event: SelectData[] | SelectData
+  ) => {
+    setNewPriority(Array.isArray(event) ? event[0].text! : event.text!);
+  };
 
   const handlerOnChangeDueDate = (event: React.ChangeEvent<HTMLInputElement>) =>
     setNewDueDate(event.target.value);
@@ -176,6 +179,7 @@ export const TaskEdit = () => {
                     <div className="relative">
                       <TESelect
                         defaultValue={newPriority}
+                        onValueChange={handlerOnChangeDPriority}
                         onChange={handlerOnChangeDPriority}
                         data={data}
                         label="Priority"

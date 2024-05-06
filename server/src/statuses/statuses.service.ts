@@ -7,7 +7,6 @@ import { TasksService } from 'src/tasks/tasks.service';
 @Injectable()
 export class StatusesService {
   constructor(
-    private readonly TasksService: TasksService,
     private prisma: PrismaService,
   ) {}
 
@@ -33,6 +32,9 @@ export class StatusesService {
       include: {
         tasks: true,
       },
+      orderBy: {
+        createdAt: 'asc',
+      },
     });
   }
 
@@ -42,7 +44,7 @@ export class StatusesService {
         tasks: true,
       },
       orderBy: {
-        title: 'desc',
+        createdAt: 'asc',
       },
     });
   }
@@ -52,34 +54,11 @@ export class StatusesService {
   }
 
   async deleteStatus(id: number) {
-    await this.TasksService.deleteTasksMany(id);
     await this.getStatusById(id);
 
     return this.prisma.status.delete({
       where: {
         id,
-      },
-    });
-  }
-
-  async deleteStatusesMany(boardId: number) {
-    const statuses = await this.prisma.status.findMany({
-      where: {
-        boardId,
-      },
-    });
-
-    if (!statuses) {
-      throw new NotFoundException('Statuses not found!');
-    }
-
-    for (const status of statuses) {
-      await this.TasksService.deleteTasksMany(status.id);
-    }
-
-    return this.prisma.status.deleteMany({
-      where: {
-        boardId,
       },
     });
   }

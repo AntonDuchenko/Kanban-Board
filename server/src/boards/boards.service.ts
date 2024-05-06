@@ -5,9 +5,7 @@ import { StatusesService } from 'src/statuses/statuses.service';
 
 @Injectable()
 export class BoardsService {
-  constructor(
-    private readonly StatusesService: StatusesService,
-    private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) {}
 
   async getBoards() {
     return this.prisma.board.findMany();
@@ -22,11 +20,10 @@ export class BoardsService {
   }
 
   async createBoard(title: string) {
-    return this.prisma.board.create({ data: { title }});
+    return this.prisma.board.create({ data: { title } });
   }
 
   async deleteBoard(id: number) {
-    await this.StatusesService.deleteStatusesMany(id);
     return this.prisma.board.delete({
       where: {
         id,

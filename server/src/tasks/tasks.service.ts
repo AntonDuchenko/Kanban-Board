@@ -41,14 +41,7 @@ export class TasksService {
     });
   }
 
-  async deleteTasksMany(statusId: number) {
-    return this.prisma.task.deleteMany({ where: {
-      statusId,
-    }})
-  }
-
   async updateTask(id: number, data) {
-    await this.getTaskById(id);
 
     return this.prisma.task.update({
       where: {
