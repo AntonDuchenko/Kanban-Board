@@ -13,10 +13,19 @@ enum Priority {
   High
 }
 
+model User {
+  id       Int     @id @default(autoincrement())
+  email    String  @unique
+  password String
+  boards   Board[]
+}
+
 model Board {
   id       Int      @id @default(autoincrement())
-  title    String @unique
+  title    String   @unique
   statuses Status[]
+  user     User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId   Int?
 }
 
 model History {
@@ -28,12 +37,12 @@ model History {
 }
 
 model Status {
-  id      Int    @id @default(autoincrement())
-  title   String
-  tasks   Task[]
+  id        Int      @id @default(autoincrement())
+  title     String
+  tasks     Task[]
   createdAt DateTime @default(now())
-  boardId Int
-  board   Board @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  boardId   Int
+  board     Board    @relation(fields: [boardId], references: [id], onDelete: Cascade)
 }
 
 model Task {

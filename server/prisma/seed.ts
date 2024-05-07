@@ -2,16 +2,35 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
+  await prisma.user.createMany({
+    data: [
+      {
+        email: 'test@gmail.com',
+        password: '$2b$10$aZB09tk2aSHha9cZEmZJ7uGF9VrjPC2UvH0cUJ3jKpDXVUOJ.Giey',
+      },
+      {
+        email: 'test2@gmail.com',
+        password: '$2b$10$aHqYFpt1RaSf6N64WtJdWu370DRc3.Pxery7JrX7456Ph7d6Rv8Ce',
+      },
+      {
+        email: 'test3@gmail.com',
+        password: '$2b$10$k2xITJZxUiumi.ADHSYG1OT6y3AE7G3mFXrSSt8Ikn0Wi/Z3kEilK',
+      },]
+  });
+
   await prisma.board.createMany({
     data: [
       {
         title: 'Frontend',
+        userId: 1,
       },
       {
         title: 'Backend',
+        userId: 1,
       },
       {
         title: 'Fullstack',
+        userId: 2,
       },
     ],
   });
