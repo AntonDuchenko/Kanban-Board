@@ -8,7 +8,7 @@ import {
 import { History } from '@prisma/client';
 import { HistoryService } from './history.service';
 
-@Controller('api/history')
+@Controller('history')
 export class HistoryController {
   constructor(private readonly historyService: HistoryService) {}
 

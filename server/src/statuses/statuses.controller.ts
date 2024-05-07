@@ -10,7 +10,7 @@ import {
 import { StatusesService } from './statuses.service';
 import { Status } from '@prisma/client';
 
-@Controller('api/statuses')
+@Controller('statuses')
 export class StatusesController {
   constructor(private readonly statusesService: StatusesService) {}
 
@@ -40,7 +40,7 @@ export class StatusesController {
   }
 
   @Patch(':id')
-  async updateTask(@Param('id') id: string, @Body() infoToUpdate) {
+  async updateTask(@Param('id') id: string, @Body() infoToUpdate: unknown) {
     return this.statusesService.updateStatus(+id, infoToUpdate);
   }
 }

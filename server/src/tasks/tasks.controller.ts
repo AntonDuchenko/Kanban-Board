@@ -10,7 +10,7 @@ import {
 import { TasksService } from './tasks.service';
 import { Task } from '@prisma/client';
 
-@Controller('api/tasks')
+@Controller('tasks')
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
