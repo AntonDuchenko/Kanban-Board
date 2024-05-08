@@ -1,4 +1,4 @@
-import { useAppSelector } from "../../app/hooks";
+import { useAppSelector } from "../../app/reduxHooks";
 import { TaskList } from "../TaskList/TaskList";
 
 export const Board = () => {
@@ -10,7 +10,7 @@ export const Board = () => {
     grid grid-cols-1 gap-3"
     >
       {statuses.map((board) => (
-        <TaskList board={board} key={board.id}/>
+        <TaskList board={board} key={board.id} />
       ))}
     </div>
   );

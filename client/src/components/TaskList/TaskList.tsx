@@ -4,7 +4,7 @@ import { DropDownDotsMenu } from "../DropDownDotsMenu/DropDownDotsMenu";
 import { TaskCard } from "../TaskCard/TaskCard";
 import classNames from "classnames";
 import { updateStatus } from "../../api/statuses";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/reduxHooks";
 import * as statusesSlice from "../../features/statusesSlice";
 import { BoardContext } from "../../context/board";
 import { toastSuccess } from "../../utils/toastSuccess";

@@ -1,6 +1,6 @@
 import { createHistory } from '../../api/history';
 import { updateTask } from "../../api/tasks";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/reduxHooks";
 import * as statusesSlice from "../../features/statusesSlice";
 import {
   TEDropdown,

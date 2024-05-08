@@ -10,7 +10,7 @@ import {
   TEInput,
 } from "tw-elements-react";
 import { BoardContext } from "../../context/board";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/reduxHooks";
 import { createStatus} from "../../api/statuses";
 import { toastSuccess } from "../../utils/toastSuccess";
 import * as statusesSlice from "../../features/statusesSlice";

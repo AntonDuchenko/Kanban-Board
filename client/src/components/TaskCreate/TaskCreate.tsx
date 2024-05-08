@@ -13,7 +13,7 @@ import {
 } from "tw-elements-react";
 import { BoardContext } from "../../context/board";
 import { createTask } from "../../api/tasks";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/reduxHooks";
 import { createHistory } from "../../api/history";
 import { toastSuccess } from "../../utils/toastSuccess";
 import * as statusesSlice from "../../features/statusesSlice";

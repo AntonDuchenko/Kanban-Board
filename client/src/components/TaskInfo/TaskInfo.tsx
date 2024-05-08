@@ -7,7 +7,7 @@ import {
   TEModalBody,
 } from "tw-elements-react";
 import { TaskActivity } from "../TaskActivity/TaskActivity";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/reduxHooks";
 import { actions as taskActions } from "../../features/choosedTaskSlice";
 import { getHistoryByTaskId } from "../../api/history";
 import { actions as editActions } from "../../features/editedTaskSlice";

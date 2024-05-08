@@ -1,4 +1,4 @@
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/reduxHooks";
 import * as statusesSlice from "../../features/statusesSlice";
 import editIcon from "../../assets/edit.svg";
 import deleteIcon from "../../assets/delete.svg";

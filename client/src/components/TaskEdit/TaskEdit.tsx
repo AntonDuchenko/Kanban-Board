@@ -11,7 +11,7 @@ import {
   TETextarea,
   TESelect,
 } from "tw-elements-react";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/reduxHooks";
 import { formatDateCalendar } from "../../utils/formateDateCalendar";
 import { updateTask } from "../../api/tasks";
 import { formateDateToDB } from "../../utils/formateDateToDB";

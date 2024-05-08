@@ -1,6 +1,6 @@
 import { DropDownMenu } from "../DropDownMenu/DropDownMenu";
 import calendar from "../../assets/calendar.svg";
-import { useAppDispatch } from "../../app/hooks";
+import { useAppDispatch } from "../../app/reduxHooks";
 import { actions as taskActions } from "../../features/choosedTaskSlice";
 import { TaskDropDownMenuDots } from "../TaskDropDownMenuDots/TaskDropDownMenuDots";
 import { formatDate } from "../../utils/formateDate";

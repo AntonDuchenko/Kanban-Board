@@ -3,7 +3,7 @@ import historyLogo from "../../assets/history.svg";
 import plusLogo from "../../assets/plus.svg";
 import burgerMenu from "../../assets/burger-menu.svg";
 import { BoardContext } from "../../context/board";
-import { useAppSelector } from '../../app/hooks';
+import { useAppSelector } from "../../app/reduxHooks";
 
 export const BoardHeader = () => {
   const { setIsOpen, setIsCreate, setIsMenuOpen } = useContext(BoardContext);

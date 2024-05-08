@@ -7,7 +7,7 @@ import {
   TEModalHeader,
 } from "tw-elements-react";
 import { BoardContext } from "../../context/board";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/reduxHooks";
 import * as boardsSlice from "../../features/boardsSlice";
 import editIcon from "../../assets/edit.svg";
 import deleteIcon from "../../assets/delete.svg";
