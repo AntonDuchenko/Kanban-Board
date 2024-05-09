@@ -3,6 +3,7 @@ import choosedTaskReducer from "../features/choosedTaskSlice";
 import editedTaskReducer from "../features/editedTaskSlice";
 import statusesSlice from "../features/statusesSlice";
 import boardsSlice from '../features/boardsSlice';
+import UserSlice from '../features/userSlice';
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     editedTask: editedTaskReducer,
     statuses: statusesSlice,
     boards: boardsSlice,
+    user: UserSlice,
   },
 });
 

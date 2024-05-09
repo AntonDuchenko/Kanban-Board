@@ -1,7 +1,7 @@
-import axios from 'axios';
-import { BASE_URL } from '../variable';
+import axios from "axios";
+import { BASE_URL } from "../variable";
 
-export const registration = async (email: string, password: string) => {
+export const registration = async (email: string, password: string): Promise<User | string> => {
   try {
     const response = await axios.post(`${BASE_URL}/users`, {
       email,
@@ -9,12 +9,16 @@ export const registration = async (email: string, password: string) => {
     });
 
     return response.data;
-  } catch (error) {
-    return error.response.data.message;
+  } catch (error: any) {
+    if (Array.isArray(error.response.data.message)) {
+      return error.response.data.message[0];
+    } else {
+      return error.response.data.message;
+    }
   }
-}
+};
 
-export const login = async (email: string, password: string) => {
+export const login = async (email: string, password: string): Promise<User | string> => {
   try {
     const response = await axios.post(`${BASE_URL}/auth/login`, {
       email,
@@ -22,7 +26,11 @@ export const login = async (email: string, password: string) => {
     });
 
     return response.data;
-  } catch (error) {
-    return error.response.data.message;
+  } catch (error: any) {
+    if (Array.isArray(error.response.data.message)) {
+      return error.response.data.message[0];
+    } else {
+      return error.response.data.message;
+    }
   }
-}
+};

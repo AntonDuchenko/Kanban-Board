@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getBoards } from "../api/boards";
+import { getBoardsByUserId } from "../api/boards";
 
 interface InitialBoards {
   boards: Status[];
@@ -8,9 +8,11 @@ interface InitialBoards {
   error: string;
 }
 
+const active_board = localStorage.getItem("active_board");
+
 const InitialState: InitialBoards = {
   boards: [],
-  activeBoard: null,
+  activeBoard: active_board ? JSON.parse(active_board) : null,
   loading: true,
   error: "",
 };
@@ -21,7 +23,12 @@ const BoardsSlice = createSlice({
   reducers: {
     setActiveBoard: (state, action) => {
       state.activeBoard = action.payload;
+
+      localStorage.setItem("active_board", JSON.stringify(action.payload));
     },
+    removeActiveBoard: (state) => {
+      state.activeBoard = null;
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(init.pending, (state) => {
@@ -38,9 +45,9 @@ const BoardsSlice = createSlice({
   },
 });
 
-export const { setActiveBoard } = BoardsSlice.actions;
+export const { setActiveBoard, removeActiveBoard } = BoardsSlice.actions;
 export default BoardsSlice.reducer;
 
-export const init = createAsyncThunk("boards/fetch", async () => {
-  return await getBoards();
+export const init = createAsyncThunk("boards/fetch", async (userId: number) => {
+  return await getBoardsByUserId(userId);
 });

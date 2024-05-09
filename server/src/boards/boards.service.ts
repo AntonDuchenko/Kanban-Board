@@ -2,6 +2,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { StatusesService } from 'src/statuses/statuses.service';
+import { CreateBoardDto } from './dto/create-board.dto';
 
 @Injectable()
 export class BoardsService {
@@ -9,6 +10,14 @@ export class BoardsService {
 
   async getBoards() {
     return this.prisma.board.findMany();
+  }
+
+  async getBoardsByUserId (userId:number) {
+    return this.prisma.board.findMany({
+      where: {
+        userId,
+      }
+    })
   }
 
   async getBoardById(id: number) {
@@ -19,8 +28,8 @@ export class BoardsService {
     });
   }
 
-  async createBoard(title: string) {
-    return this.prisma.board.create({ data: { title } });
+  async createBoard(createBoardDto: CreateBoardDto) {
+    return this.prisma.board.create({ data: createBoardDto });
   }
 
   async deleteBoard(id: number) {

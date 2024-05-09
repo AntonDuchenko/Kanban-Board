@@ -16,7 +16,11 @@ const initialState: InitialState = {
 const StatusesSlice = createSlice({
   name: "statuses",
   initialState,
-  reducers: {},
+  reducers: {
+    removeStatuses: (state) => {
+      state.statuses = [];
+    }
+  },
   extraReducers: (builder) => {
     builder.addCase(init.pending, (state) => {
       state.loading = true;
@@ -31,6 +35,8 @@ const StatusesSlice = createSlice({
     });
   },
 });
+
+export const { removeStatuses } = StatusesSlice.actions;
 
 export default StatusesSlice.reducer;
 

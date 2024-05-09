@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from "react";
-import plusBlack from "../../assets/plus-black.svg";
 import { DropDownDotsMenu } from "../DropDownDotsMenu/DropDownDotsMenu";
 import { TaskCard } from "../TaskCard/TaskCard";
 import classNames from "classnames";
@@ -11,6 +10,7 @@ import { toastSuccess } from "../../utils/toastSuccess";
 import { toastError } from "../../utils/toastError";
 import { TEInput } from "tw-elements-react";
 import { Droppable } from "react-beautiful-dnd";
+import { CreateButton } from '../CreateButton/CreateButton';
 
 interface Props {
   board: Status;
@@ -61,7 +61,7 @@ export const TaskList: React.FC<Props> = ({ board }) => {
           {board.title}
         </p>
         {isEditing === board.id && (
-          <form className="max-w-[70%]" onSubmit={handlerOnSubmit}>
+          <form onSubmit={handlerOnSubmit}>
             <TEInput
               value={newTitle}
               autoFocus
@@ -78,15 +78,7 @@ export const TaskList: React.FC<Props> = ({ board }) => {
           <DropDownDotsMenu board={board} />
         </div>
       </div>
-      <button
-        onClick={handlerOnCreateClick}
-        type="button"
-        className="border-dashed border-2 border-dark flex transition-all 
-      gap-2 justify-center items-center min-h-[40px] w-full rounded-lg hover:bg-slate-200"
-      >
-        <img src={plusBlack} alt="plus.svg" />
-        Add new card
-      </button>
+      <CreateButton handlerOnCreateClick={handlerOnCreateClick} title="Create task" />
 
       <Droppable droppableId={board.id.toString()}>
         {(provided) => (

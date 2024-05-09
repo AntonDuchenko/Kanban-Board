@@ -1,4 +1,4 @@
-import { createHistory } from '../../api/history';
+import { createHistory } from "../../api/history";
 import { updateTask } from "../../api/tasks";
 import { useAppDispatch, useAppSelector } from "../../app/reduxHooks";
 import * as statusesSlice from "../../features/statusesSlice";
@@ -25,8 +25,6 @@ export const DropDownMenu: React.FC<Props> = ({ task }) => {
   const filteredBoards = statuses.filter((board) => board.id !== task.statusId);
 
   const handlerOnChangeStatus = async (board: Status) => {
-    console.log("board", board);
-    
     try {
       await updateTask(task.id, { statusId: board.id });
 

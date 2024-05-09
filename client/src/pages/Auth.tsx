@@ -3,11 +3,15 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { TEInput, TERipple } from "tw-elements-react";
 import { login, registration } from "../api/auth";
 import { toastError } from '../utils/toastError';
+import { useAppDispatch } from '../app/reduxHooks';
+import * as userSlice from '../features/userSlice';
+import { toastSuccess } from '../utils/toastSuccess';
 
 export default function Auth(): JSX.Element {
   const currentPage = useLocation().pathname.slice(1);
   const isLogin = currentPage === "login";
   const navigation = useNavigate();
+  const dispatch = useAppDispatch();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -17,10 +21,11 @@ export default function Auth(): JSX.Element {
 
     if (isLogin) {
       const user = await login(email, password);
-      console.log(user);
       
       if (typeof user === "object") {
-        navigation("/board");
+        dispatch(userSlice.setLoggedIn(user));
+        navigation(`/board`);
+        toastSuccess(`User ${user.email} logged in successfully`);
       } else {
         toastError(user);
       }
@@ -29,6 +34,7 @@ export default function Auth(): JSX.Element {
 
       if (typeof user === "object") {
         navigation("/login");
+        toastSuccess(`User ${user.email} registered successfully`);
       } else {
         toastError(user);
       }
@@ -123,7 +129,6 @@ export default function Auth(): JSX.Element {
               <TEInput
                 onChange={(e) => setEmail(e.target.value)}
                 type="email"
-                required
                 label="Email address"
                 size="lg"
                 className="mb-6"
@@ -133,7 +138,6 @@ export default function Auth(): JSX.Element {
               <TEInput
                 onChange={(e) => setPassword(e.target.value)}
                 type="password"
-                required
                 label="Password"
                 className="mb-6"
                 size="lg"

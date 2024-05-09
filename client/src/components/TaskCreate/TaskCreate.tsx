@@ -18,6 +18,7 @@ import { createHistory } from "../../api/history";
 import { toastSuccess } from "../../utils/toastSuccess";
 import * as statusesSlice from "../../features/statusesSlice";
 import { toastError } from "../../utils/toastError";
+import { SelectData } from 'tw-elements-react/dist/types/forms/Select/types';
 
 export default function TaskCreate(): JSX.Element {
   const { setIsCreateTask, isCreateTask, status, setStatus } =
@@ -46,8 +47,8 @@ export default function TaskCreate(): JSX.Element {
     setDueDate(event.target.value);
 
   const handlerOnChangePriority = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => setPriority(event.target.value);
+    event: SelectData[] | SelectData
+  ) => setPriority(Array.isArray(event) ? event[0].text! : event.text!);
 
   const handlerOnSubmit = async (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -156,7 +157,7 @@ export default function TaskCreate(): JSX.Element {
                     <div className="relative">
                       <TESelect
                         defaultValue={priority}
-                        onChange={handlerOnChangePriority}
+                        onValueChange={handlerOnChangePriority}
                         data={data}
                         label="Priority"
                       />

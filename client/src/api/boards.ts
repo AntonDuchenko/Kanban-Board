@@ -1,15 +1,15 @@
-import axios from 'axios';
-import { BASE_URL } from '../variable';
+import axios from "axios";
+import { BASE_URL } from "../variable";
 
-export const getBoards = async () => {
+export const getBoardsByUserId = async (userId: number) => {
   try {
-    const response = await axios.get<Status[]>(`${BASE_URL}/boards`);
+    const response = await axios.get<Status[]>(`${BASE_URL}/boards/${userId}`);
 
     return response.data;
   } catch (error) {
     throw new Error("Unable to load boards");
   }
-}
+};
 
 export const getBoardById = async (id: number) => {
   try {
@@ -19,17 +19,17 @@ export const getBoardById = async (id: number) => {
   } catch (error) {
     throw new Error(`Unable to load board id ${id}`);
   }
-}
+};
 
-export const createBoard = async (title: string) => {
+export const createBoard = async (title: string, userId: number) => {
   try {
-    const response = await axios.post(`${BASE_URL}/boards`, title);
+    const response = await axios.post(`${BASE_URL}/boards`, { title, userId });
 
     return response.data;
   } catch (error) {
     throw new Error("Unable to create board");
   }
-}
+};
 
 export const updateBoard = async (id: number, newTitle: string) => {
   try {
@@ -39,7 +39,7 @@ export const updateBoard = async (id: number, newTitle: string) => {
   } catch (error) {
     throw new Error("Unable to update board");
   }
-}
+};
 
 export const deleteBoard = async (id: number) => {
   try {
@@ -49,4 +49,4 @@ export const deleteBoard = async (id: number) => {
   } catch (error) {
     throw new Error("Unable to delete board");
   }
-}
+};

@@ -1,5 +1,6 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
+  TEInput,
   TEModal,
   TEModalBody,
   TEModalContent,
@@ -11,18 +12,34 @@ import { useAppDispatch, useAppSelector } from "../../app/reduxHooks";
 import * as boardsSlice from "../../features/boardsSlice";
 import editIcon from "../../assets/edit.svg";
 import deleteIcon from "../../assets/delete.svg";
-import * as statusesSlice from "../../features/statusesSlice";
-import { deleteBoard } from '../../api/boards';
+import { createBoard, deleteBoard } from "../../api/boards";
+import { CreateButton } from "../CreateButton/CreateButton";
+import { Link } from "react-router-dom";
 
 export const BurgerMenu = () => {
   const { isMenuOpen, setIsMenuOpen } = useContext(BoardContext);
+  const [isCreateBoard, setIsCreateBoard] = useState(false);
+  const [newBoardTitle, setNewBoardTitle] = useState("");
   const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.user.user);
 
   useEffect(() => {
-    dispatch(boardsSlice.init());
-  }, []);
+    dispatch(boardsSlice.init(user?.id!));
+  }, [user]);
 
   const boards = useAppSelector((state) => state.boards.boards);
+
+  const handlerOnCreateClick = () => {
+    setIsCreateBoard(true);
+  };
+
+  const handlerOnSubmit = async () => {
+    await createBoard(newBoardTitle, user?.id!);
+    setNewBoardTitle("");
+    setIsCreateBoard(false);
+
+    dispatch(boardsSlice.init(user?.id!));
+  };
 
   return (
     <TEModal show={isMenuOpen} setShow={setIsMenuOpen}>
@@ -34,8 +51,8 @@ export const BurgerMenu = () => {
           hidden: "translate-x-[100%] opacity-0",
         }}
       >
-        <TEModalContent>
-          <TEModalHeader>
+        <TEModalContent className="p-2">
+          <TEModalHeader className="mb-2 !p-3">
             {/* <!--Modal title--> */}
             <h5 className="text-xl font-medium leading-normal text-neutral-800 dark:text-neutral-200">
               Your boards
@@ -63,25 +80,44 @@ export const BurgerMenu = () => {
               </svg>
             </button>
           </TEModalHeader>
+          <CreateButton
+            handlerOnCreateClick={handlerOnCreateClick}
+            title="Create new board"
+            classNames="mb-3"
+          />
+          {isCreateBoard && (
+            <form onSubmit={handlerOnSubmit} className="mb-3">
+              <TEInput
+                value={newBoardTitle}
+                autoFocus
+                className="min-w-[80%]"
+                onChange={(e) => setNewBoardTitle(e.target.value)}
+                onBlur={() => setIsCreateBoard(false)}
+                type="text"
+                id="exampleFormControlInputText"
+                label="Board name"
+              />
+            </form>
+          )}
           {/* <!--Modal body--> */}
-          <TEModalBody className="flex flex-col gap-3">
+          <TEModalBody className="flex flex-col gap-3 !p-0">
             {boards.map((board) => (
               <div
                 key={board.id}
                 className="border border-solid border-dark flex justify-between items-center
       rounded-lg w-full pl-3 hover:bg-slate-200 transition-all text-xl min-h-[50px]"
               >
-                <button
-                  className="w-full text-start h-[48px]"
+                <Link
+                  to={`/board/${board.id}`}
+                  className="w-full text-start h-[48px] items-center flex"
                   onClick={() => {
-                    dispatch(statusesSlice.init(board.id));
                     dispatch(boardsSlice.setActiveBoard(board));
                     setIsMenuOpen(false);
                   }}
                   type="button"
                 >
                   {board.title}
-                </button>
+                </Link>
                 <div className="flex gap-1">
                   <button
                     type="button"
@@ -92,7 +128,7 @@ export const BurgerMenu = () => {
                   <button
                     onClick={async () => {
                       await deleteBoard(board.id);
-                      dispatch(boardsSlice.init());
+                      dispatch(boardsSlice.init(user?.id!));
                     }}
                     type="button"
                     className="hover:bg-slate-400 transition-all p-3 rounded-lg"
