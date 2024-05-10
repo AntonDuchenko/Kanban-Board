@@ -33,7 +33,9 @@ export const BurgerMenu = () => {
     setIsCreateBoard(true);
   };
 
-  const handlerOnSubmit = async () => {
+  const handlerOnSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
     await createBoard(newBoardTitle, user?.id!);
     setNewBoardTitle("");
     setIsCreateBoard(false);

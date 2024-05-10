@@ -15,6 +15,8 @@ export default function Auth(): JSX.Element {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [isRememberMe, setIsRememberMe] = useState(false);
 
   const handlerOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -30,6 +32,12 @@ export default function Auth(): JSX.Element {
         toastError(user);
       }
     } else {
+      if (password !== confirmPassword) {
+        toastError("Passwords do not match");
+
+        return;
+      }
+
       const user = await registration(email, password);
 
       if (typeof user === "object") {
@@ -143,10 +151,21 @@ export default function Auth(): JSX.Element {
                 size="lg"
               ></TEInput>
 
+              {!isLogin && (
+                <TEInput
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                type="password"
+                label="Confirm Password"
+                className="mb-6"
+                size="lg"
+              ></TEInput>
+            )}
+
               <div className="mb-6 flex flex-col sm:items-center gap-1 justify-between sm:flex-row">
                 {/* <!-- Remember me checkbox --> */}
                 <div className="mb-[0.125rem] block min-h-[1.5rem] pl-[1.5rem]">
                   <input
+                    onChange={() => setIsRememberMe(!isRememberMe)}
                     className="relative float-left -ml-[1.5rem] mr-[6px] mt-[0.15rem] h-[1.125rem] w-[1.125rem] 
                     appearance-none rounded-[0.25rem] border-[0.125rem] border-solid border-neutral-300 
                     outline-none before:pointer-events-none before:absolute before:h-[0.875rem] 

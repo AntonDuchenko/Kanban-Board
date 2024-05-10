@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "../../app/reduxHooks";
 import { useNavigate } from 'react-router-dom';
 import * as boardsSlice from '../../features/boardsSlice';
 import * as statusesSlice from '../../features/statusesSlice';
+import { toastSuccess } from '../../utils/toastSuccess';
 
 export const BoardHeader = () => {
   const { setIsOpen, setIsCreate, setIsMenuOpen } = useContext(BoardContext);
@@ -62,6 +63,7 @@ export const BoardHeader = () => {
             dispatch(boardsSlice.removeActiveBoard());
             dispatch(statusesSlice.removeStatuses());
             navigat("/login");
+            toastSuccess("Logout successfully");
           }}
           type="button"
           className="inline-block rounded-lg bg-info px-6 pb-2 pt-2.5 text-xs 
