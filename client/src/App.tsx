@@ -5,12 +5,15 @@ import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
 import Auth from "./pages/Auth";
 import { ToastContainer } from "react-toastify";
 import { useOnDragEnd } from "./app/hooks";
-import { useAppSelector } from "./app/reduxHooks";
+import { useAppDispatch, useAppSelector } from "./app/reduxHooks";
 
 function App() {
-  const onDragEnd = useOnDragEnd();
-  const isAuth = useAppSelector((state) => state.user.isAuth);
+  const dispatch = useAppDispatch();
+  const columns = useAppSelector((state) => state.statuses.statuses);
   const activeBoard = useAppSelector((state) => state.boards.activeBoard);
+
+  const onDragEnd = useOnDragEnd(columns, dispatch);
+  const isAuth = useAppSelector((state) => state.user.isAuth);
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>

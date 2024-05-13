@@ -43,8 +43,24 @@ export const BurgerMenu = () => {
     dispatch(boardsSlice.init(user?.id!));
   };
 
+  const handlerOnCloseClick = () => setIsMenuOpen(false);
+
+  const handlerOnTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => setNewBoardTitle(e.target.value);
+
+  const handlerOnTitleBlur = () => setIsCreateBoard(false);
+
+  const handlerOnTitleClick = (board: Status) => {
+    dispatch(boardsSlice.setActiveBoard(board));
+    setIsMenuOpen(false);
+  };
+
+  const handlerOnDelete = async (board: Status) => {
+    await deleteBoard(board.id);
+    dispatch(boardsSlice.init(user?.id!));
+  };
+
   return (
-    <TEModal show={isMenuOpen} setShow={setIsMenuOpen}>
+    <TEModal show={isMenuOpen} setShow={setIsMenuOpen} wrapper>
       <TEModalDialog
         position="top-right"
         className="transition-all !right-0 sm:!right-7"
@@ -55,15 +71,14 @@ export const BurgerMenu = () => {
       >
         <TEModalContent className="p-2">
           <TEModalHeader className="mb-2 !p-3">
-            {/* <!--Modal title--> */}
             <h5 className="text-xl font-medium leading-normal text-neutral-800 dark:text-neutral-200">
               Your boards
             </h5>
-            {/* <!--Close button--> */}
+
             <button
               type="button"
               className="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
-              onClick={() => setIsMenuOpen(false)}
+              onClick={handlerOnCloseClick}
               aria-label="Close"
             >
               <svg
@@ -82,26 +97,28 @@ export const BurgerMenu = () => {
               </svg>
             </button>
           </TEModalHeader>
+
           <CreateButton
             handlerOnCreateClick={handlerOnCreateClick}
             title="Create new board"
             classNames="mb-3"
           />
+
           {isCreateBoard && (
             <form onSubmit={handlerOnSubmit} className="mb-3">
               <TEInput
                 value={newBoardTitle}
                 autoFocus
                 className="min-w-[80%]"
-                onChange={(e) => setNewBoardTitle(e.target.value)}
-                onBlur={() => setIsCreateBoard(false)}
+                onChange={handlerOnTitleChange}
+                onBlur={handlerOnTitleBlur}
                 type="text"
                 id="exampleFormControlInputText"
                 label="Board name"
               />
             </form>
           )}
-          {/* <!--Modal body--> */}
+
           <TEModalBody className="flex flex-col gap-3 !p-0">
             {boards.map((board) => (
               <div
@@ -112,14 +129,12 @@ export const BurgerMenu = () => {
                 <Link
                   to={`/board/${board.id}`}
                   className="w-full text-start h-[48px] items-center flex"
-                  onClick={() => {
-                    dispatch(boardsSlice.setActiveBoard(board));
-                    setIsMenuOpen(false);
-                  }}
+                  onClick={() => handlerOnTitleClick(board)}
                   type="button"
                 >
                   {board.title}
                 </Link>
+
                 <div className="flex gap-1">
                   <button
                     type="button"
@@ -127,11 +142,9 @@ export const BurgerMenu = () => {
                   >
                     <img src={editIcon} alt="edit-icon" className="w-[35px]" />
                   </button>
+
                   <button
-                    onClick={async () => {
-                      await deleteBoard(board.id);
-                      dispatch(boardsSlice.init(user?.id!));
-                    }}
+                    onClick={() => handlerOnDelete(board)}
                     type="button"
                     className="hover:bg-slate-400 transition-all p-3 rounded-lg"
                   >

@@ -28,6 +28,7 @@ export const HistoryItem: React.FC<Props> = ({ action }) => {
           <i>{formatDateLog(action.createAt)}</i>
         </>
       )}
+
       {action.action === "Change status" && (
         <>
           <p className="mb-2">
@@ -48,6 +49,7 @@ export const HistoryItem: React.FC<Props> = ({ action }) => {
           <i>{formatDateLog(action.createAt)}</i>
         </>
       )}
+
       {action.action === "Change name" && (
         <>
           <p className="mb-2">
@@ -77,6 +79,7 @@ export const HistoryItem: React.FC<Props> = ({ action }) => {
           <i>{formatDateLog(action.createAt)}</i>
         </>
       )}
+
       {action.action === "Change priority" && (
         <>
           <p className="mb-2">
@@ -117,6 +120,7 @@ export const HistoryItem: React.FC<Props> = ({ action }) => {
           <i>{formatDateLog(action.createAt)}</i>
         </>
       )}
+
       {action.action === "Deleted" && (
         <>
           <p className="mb-2">

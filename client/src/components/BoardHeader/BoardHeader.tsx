@@ -15,58 +15,70 @@ export const BoardHeader = () => {
   const navigat = useNavigate();
   const dispatch = useAppDispatch();  
 
+  const handlerOnHistoryClick = () => {
+    setIsOpen(true);
+  };
+
+  const handlerOnCreateStatusClick = () => {
+    setIsCreate(true);
+  };
+
+  const handlerOnBoardsClick = () => {
+    setIsMenuOpen(true);
+  };
+
+  const handlerOnLogoutClick = () => {
+    localStorage.removeItem("userToken");
+    localStorage.removeItem("active_board");
+    dispatch(boardsSlice.removeActiveBoard());
+    dispatch(statusesSlice.removeStatuses());
+    navigat("/login");
+    toastSuccess("Logout successfully");
+  };
+
   return (
     <div className="h-[60px] flex justify-between py-[10px] border-b-black border-b">
       <h1 className="capitalize text-2xl sm:text-4xl font-bold">
         {activeBoard?.title || "Select a board"}
       </h1>
+
       <div className="flex gap-2">
         <button
-          onClick={() => {
-            setIsOpen(true);
-          }}
+          onClick={handlerOnHistoryClick}
           type="button"
           className="max-h-[40px] min-w-[50px] sm:min-w-[120px] border flex flex-row gap-1 justify-center items-center
           border-solid rounded-lg hover:bg-slate-200 transition-all"
         >
           <img src={historyLogo} alt="History-logo" />
+
           <span className="sm:block hidden">History</span>
         </button>
 
         <button
-          onClick={() => {
-            setIsCreate(true);
-          }}
+          onClick={handlerOnCreateStatusClick}
           type="button"
           className="max-h-[40px] min-w-[50px] sm:min-w-[180px] w-full border flex flex-row gap-1 justify-center items-center
           border-solid rounded-lg bg-slate-600 text-white hover:bg-slate-800 transition-all"
         >
           <img src={plusLogo} alt="History-logo" className="h-[20px]" />
+
           <span className="hidden sm:block">Create new status</span>
         </button>
 
         <button
-          onClick={() => {
-            setIsMenuOpen(true);
-          }}
+          onClick={handlerOnBoardsClick}
           type="button"
           className="border border-solid sm:min-w-[150px] w-full rounded-lg flex gap-1 justify-center items-center hover:bg-slate-200 transition-all px-1"
         >
           <span className="sm:block hidden">Your boards</span>
+
           <img src={burgerMenu} alt="burger-menu" className="h-[25px]" />
         </button>
 
         <button
-          onClick={() => {
-            localStorage.removeItem("userToken");
-            localStorage.removeItem("active_board");
-            dispatch(boardsSlice.removeActiveBoard());
-            dispatch(statusesSlice.removeStatuses());
-            navigat("/login");
-            toastSuccess("Logout successfully");
-          }}
+          onClick={handlerOnLogoutClick}
           type="button"
-          className="inline-block rounded-lg bg-info px-6 pb-2 pt-2.5 text-xs 
+          className="flex justify-center items-center rounded-lg bg-info min-w-[100px] text-xs 
         uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#54b4d3] 
         transition duration-150 ease-in-out hover:bg-info-600 hover:shadow-[0_8px_9px_-4px_rgba(84,180,211,0.3),0_4px_18px_0_rgba(84,180,211,0.2)] 
         focus:bg-info-600 focus:shadow-[0_8px_9px_-4px_rgba(84,180,211,0.3),0_4px_18px_0_rgba(84,180,211,0.2)] focus:outline-none focus:ring-0 
@@ -75,7 +87,7 @@ export const BoardHeader = () => {
         dark:focus:shadow-[0_8px_9px_-4px_rgba(84,180,211,0.2),0_4px_18px_0_rgba(84,180,211,0.1)] 
         dark:active:shadow-[0_8px_9px_-4px_rgba(84,180,211,0.2),0_4px_18px_0_rgba(84,180,211,0.1)]"
         >
-          Logout
+          Log out
         </button>
       </div>
     </div>

@@ -85,6 +85,7 @@ export const TaskDropDownMenuDots: React.FC<Props> = ({ task }) => {
             Edit
           </button>
         </TEDropdownItem>
+
         <TEDropdownItem>
           <button
             onClick={handlerOnDeleteClick}

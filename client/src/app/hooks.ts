@@ -1,13 +1,14 @@
 import { useCallback } from "react";
 import { DropResult } from "react-beautiful-dnd";
-import { useAppDispatch, useAppSelector } from './reduxHooks';
-import { updateTask } from '../api/tasks';
-import * as statusesSlice from '../features/statusesSlice';
+import { updateTask } from "../api/tasks";
+import * as statusesSlice from "../features/statusesSlice";
+import { AppDispatch } from "./store";
+import { toastSuccess } from "../utils/toastSuccess";
+import { toastError } from "../utils/toastError";
+import { useAppSelector } from './reduxHooks';
 
-export const useOnDragEnd = () => {
-  const dispatch = useAppDispatch();
-  const columns = useAppSelector((state) => state.statuses.statuses);
-  const activeBoard = useAppSelector((state) => state.boards.activeBoard);
+export const useOnDragEnd = (columns: Status[], dispatch: AppDispatch) => {
+  const activeBoard = useAppSelector(state => state.boards.activeBoard);
 
   const onDragEnd = useCallback(
     async (result: DropResult) => {
@@ -46,11 +47,31 @@ export const useOnDragEnd = () => {
 
         destinationTasks.splice(destination.index, 0, removed);
 
-        await updateTask(+removed.id, { statusId: +destinationStatusId! });
+        const newColumns = Array.from(columns);
+
+        newColumns[foundSourceColumnIndex] = {
+          ...sourceColumn,
+          tasks: sourceTasks,
+        };
+
+        newColumns[foundDestinationColumnIndex] = {
+          ...destinationColumn,
+          tasks: destinationTasks,
+        };
+
+        dispatch(statusesSlice.updateStatuses(newColumns));
+
+        try {
+          await updateTask(+removed.id, { statusId: +destinationStatusId! });
+          toastSuccess(`Status of task ${removed.name} was updated`);
+        } catch (error) {
+          toastError("Something went wrong");
+        }
+
         dispatch(statusesSlice.init(activeBoard?.id!));
       }
     },
-    [dispatch, columns, activeBoard]
+    [dispatch, columns]
   );
 
   return onDragEnd;

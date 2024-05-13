@@ -79,6 +79,7 @@ export const DropDownDotsMenu: React.FC<Props> = ({ board }) => {
             Edit
           </button>
         </TEDropdownItem>
+
         <TEDropdownItem>
           <button
             onClick={handlerOnCreateClick}
@@ -94,6 +95,7 @@ export const DropDownDotsMenu: React.FC<Props> = ({ board }) => {
             Add new card
           </button>
         </TEDropdownItem>
+
         <TEDropdownItem>
           <button
             onClick={handlerOnDeleteClick}

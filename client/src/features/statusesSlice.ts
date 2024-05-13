@@ -19,6 +19,9 @@ const StatusesSlice = createSlice({
   reducers: {
     removeStatuses: (state) => {
       state.statuses = [];
+    },
+    updateStatuses: (state, action) => {
+      state.statuses = action.payload;
     }
   },
   extraReducers: (builder) => {
@@ -36,7 +39,7 @@ const StatusesSlice = createSlice({
   },
 });
 
-export const { removeStatuses } = StatusesSlice.actions;
+export const { removeStatuses, updateStatuses } = StatusesSlice.actions;
 
 export default StatusesSlice.reducer;
 

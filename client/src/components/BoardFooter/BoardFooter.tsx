@@ -4,10 +4,10 @@ export const BoardFooter = () => {
       <nav>
         <ul>
           <li>
-            <a href="#">GitHub</a>
+            <a href="https://github.com/AntonDuchenko/React-App">GitHub</a>
           </li>
           <li>
-            <a href="#">Contacts</a>
+            <a href="https://github.com/AntonDuchenko">Contacts</a>
           </li>
         </ul>
       </nav>

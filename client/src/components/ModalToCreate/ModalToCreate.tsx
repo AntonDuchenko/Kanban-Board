@@ -37,27 +37,28 @@ export default function ModalToCreate(): JSX.Element {
       toastSuccess(`${newBoard.title} board created!`);
       setIsCreate(false);
       dispatch(statusesSlice.init(activeBoard?.id!));
+      setTitle("");
     } catch (error) {
       toastError(`${error}`);
     }
   };
 
+  const handlerOnCloseClick = () => setIsCreate(false);
+
   return (
     <div>
-      {/* <!-- Modal --> */}
       <TEModal show={isCreate} setShow={setIsCreate}>
         <TEModalDialog>
           <TEModalContent>
             <TEModalHeader>
-              {/* <!--Modal title--> */}
               <h5 className="text-xl font-medium leading-normal text-neutral-800 dark:text-neutral-200">
                 Status name
               </h5>
-              {/* <!--Close button--> */}
+
               <button
                 type="button"
                 className="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
-                onClick={() => setIsCreate(false)}
+                onClick={handlerOnCloseClick}
                 aria-label="Close"
               >
                 <svg
@@ -76,7 +77,7 @@ export default function ModalToCreate(): JSX.Element {
                 </svg>
               </button>
             </TEModalHeader>
-            {/* <!--Modal body--> */}
+
             <TEModalBody>
               <form onSubmit={handlerOnSubmit}>
                 <div className="p-4">
@@ -91,6 +92,7 @@ export default function ModalToCreate(): JSX.Element {
                 </div>
               </form>
             </TEModalBody>
+
             <TEModalFooter>
               <TERipple rippleColor="light">
                 <button
@@ -100,11 +102,12 @@ export default function ModalToCreate(): JSX.Element {
                    transition duration-150 ease-in-out 
                    hover:bg-slate-200 focus:bg-slate-200 
                   focus:outline-none focus:ring-0 active:bg-slate-200"
-                  onClick={() => setIsCreate(false)}
+                  onClick={handlerOnCloseClick}
                 >
                   Close
                 </button>
               </TERipple>
+
               <TERipple rippleColor="light">
                 <button
                   onClick={handlerOnSubmit}

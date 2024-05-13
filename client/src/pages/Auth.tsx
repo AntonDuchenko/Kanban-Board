@@ -2,10 +2,10 @@ import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { TEInput, TERipple } from "tw-elements-react";
 import { login, registration } from "../api/auth";
-import { toastError } from '../utils/toastError';
-import { useAppDispatch } from '../app/reduxHooks';
-import * as userSlice from '../features/userSlice';
-import { toastSuccess } from '../utils/toastSuccess';
+import { toastError } from "../utils/toastError";
+import { useAppDispatch } from "../app/reduxHooks";
+import * as userSlice from "../features/userSlice";
+import { toastSuccess } from "../utils/toastSuccess";
 
 export default function Auth(): JSX.Element {
   const currentPage = useLocation().pathname.slice(1);
@@ -22,10 +22,10 @@ export default function Auth(): JSX.Element {
     e.preventDefault();
 
     if (isLogin) {
-      const user = await login(email, password);
-      
+      const user = await login(email, password, isRememberMe);
+
       if (typeof user === "object") {
-        dispatch(userSlice.setLoggedIn(user));
+        dispatch(userSlice.setLoggedIn({ user, isRememberMe }));
         navigation(`/board`);
         toastSuccess(`User ${user.email} logged in successfully`);
       } else {
@@ -52,7 +52,6 @@ export default function Auth(): JSX.Element {
   return (
     <section className="h-screen">
       <div className="h-full">
-        {/* <!-- Left column container with background--> */}
         <div className="g-6 flex h-full flex-wrap items-center justify-center lg:justify-between">
           <div className="shrink-1 mb-12 grow-0 basis-auto md:mb-0 md:w-9/12 md:shrink-0 lg:w-6/12 xl:w-6/12">
             <img
@@ -62,16 +61,13 @@ export default function Auth(): JSX.Element {
             />
           </div>
 
-          {/* <!-- Right column container --> */}
           <div className="mb-12 md:mb-0 md:w-8/12 lg:w-5/12 xl:w-5/12">
             <form onSubmit={handlerOnSubmit}>
-              {/* <!--Sign in section--> */}
               <div className="flex flex-row items-center justify-center">
                 <p className="mb-0 mr-4 text-lg">
                   {isLogin ? "Sign in with" : "Sign up with"}
                 </p>
 
-                {/* <!-- Facebook button--> */}
                 <TERipple rippleColor="light">
                   <button
                     type="button"
@@ -89,7 +85,6 @@ export default function Auth(): JSX.Element {
                   </button>
                 </TERipple>
 
-                {/* <!-- Twitter button --> */}
                 <TERipple rippleColor="light">
                   <button
                     type="button"
@@ -107,7 +102,6 @@ export default function Auth(): JSX.Element {
                   </button>
                 </TERipple>
 
-                {/* <!-- Linkedin button --> */}
                 <TERipple rippleColor="light">
                   <button
                     type="button"
@@ -126,14 +120,12 @@ export default function Auth(): JSX.Element {
                 </TERipple>
               </div>
 
-              {/* <!-- Separator between social media sign in and email/password sign in --> */}
               <div className="my-4 flex items-center before:mt-0.5 before:flex-1 before:border-t before:border-neutral-300 after:mt-0.5 after:flex-1 after:border-t after:border-neutral-300">
                 <p className="mx-4 mb-0 text-center font-semibold dark:text-white">
                   Or
                 </p>
               </div>
 
-              {/* <!-- Email input --> */}
               <TEInput
                 onChange={(e) => setEmail(e.target.value)}
                 type="email"
@@ -142,7 +134,6 @@ export default function Auth(): JSX.Element {
                 className="mb-6"
               ></TEInput>
 
-              {/* <!--Password input--> */}
               <TEInput
                 onChange={(e) => setPassword(e.target.value)}
                 type="password"
@@ -153,16 +144,15 @@ export default function Auth(): JSX.Element {
 
               {!isLogin && (
                 <TEInput
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                type="password"
-                label="Confirm Password"
-                className="mb-6"
-                size="lg"
-              ></TEInput>
-            )}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  type="password"
+                  label="Confirm Password"
+                  className="mb-6"
+                  size="lg"
+                ></TEInput>
+              )}
 
               <div className="mb-6 flex flex-col sm:items-center gap-1 justify-between sm:flex-row">
-                {/* <!-- Remember me checkbox --> */}
                 <div className="mb-[0.125rem] block min-h-[1.5rem] pl-[1.5rem]">
                   <input
                     onChange={() => setIsRememberMe(!isRememberMe)}
@@ -200,7 +190,6 @@ export default function Auth(): JSX.Element {
                   </label>
                 </div>
 
-                {/* <!--Forgot password link--> */}
                 <a href="#!">
                   {isLogin ? "Forgot password?" : "Terms and conditions"}
                 </a>

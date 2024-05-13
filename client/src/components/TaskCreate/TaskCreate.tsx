@@ -80,22 +80,22 @@ export default function TaskCreate(): JSX.Element {
     }
   };
 
+  const handlerOnCloseClick = () => setIsCreateTask(false);
+
   return (
     <div>
-      {/* <!-- Modal --> */}
       <TEModal show={isCreateTask} setShow={setIsCreateTask}>
         <TEModalDialog className="sm:!max-w-[40%] sm:!h-[80%] sm:mb-7">
           <TEModalContent className="!h-full">
             <TEModalHeader>
-              {/* <!--Modal title--> */}
               <h5 className="text-xl font-bold leading-normal text-neutral-800 dark:text-neutral-200">
                 Task creating
               </h5>
-              {/* <!--Close button--> */}
+
               <button
                 type="button"
                 className="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
-                onClick={() => setIsCreateTask(false)}
+                onClick={handlerOnCloseClick}
                 aria-label="Close"
               >
                 <svg
@@ -114,7 +114,7 @@ export default function TaskCreate(): JSX.Element {
                 </svg>
               </button>
             </TEModalHeader>
-            {/* <!--Modal body--> */}
+
             <TEModalBody className="overflow-y-auto">
               <div>
                 <form>
@@ -166,6 +166,7 @@ export default function TaskCreate(): JSX.Element {
                 </form>
               </div>
             </TEModalBody>
+
             <TEModalFooter>
               <TERipple rippleColor="light">
                 <button
@@ -174,11 +175,12 @@ export default function TaskCreate(): JSX.Element {
                   focus:ring-4 focus:outline-none focus:ring-blue-300 
                   font-medium rounded-lg text-sm w-full sm:w-auto 
                   px-10 py-2.5 text-center mr-2"
-                  onClick={() => setIsCreateTask(false)}
+                  onClick={handlerOnCloseClick}
                 >
                   Close
                 </button>
               </TERipple>
+
               <TERipple rippleColor="light">
                 <button
                   onClick={handlerOnSubmit}

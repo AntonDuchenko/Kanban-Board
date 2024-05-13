@@ -101,16 +101,14 @@ export const TaskEdit = () => {
 
   return (
     <div>
-      {/* <!-- Modal --> */}
       <TEModal show={!!editingTask} setShow={removeEditingTask}>
         <TEModalDialog className="!max-w-[40%] !h-[80%] mb-7">
           <TEModalContent className="!h-full">
             <TEModalHeader>
-              {/* <!--Modal title--> */}
               <h5 className="text-xl font-bold leading-normal text-neutral-800 dark:text-neutral-200">
                 Edit Task
               </h5>
-              {/* <!--Close button--> */}
+
               <button
                 type="button"
                 className="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
@@ -133,7 +131,7 @@ export const TaskEdit = () => {
                 </svg>
               </button>
             </TEModalHeader>
-            {/* <!--Modal body--> */}
+
             <TEModalBody className="overflow-y-auto">
               <div>
                 <form onSubmit={handlerOnSubmit}>
@@ -164,6 +162,7 @@ export const TaskEdit = () => {
                       >
                         Due date
                       </label>
+
                       <input
                         onChange={handlerOnChangeDueDate}
                         value={newDueDate}
@@ -189,6 +188,7 @@ export const TaskEdit = () => {
                 </form>
               </div>
             </TEModalBody>
+
             <TEModalFooter>
               <TERipple rippleColor="light">
                 <button
@@ -202,6 +202,7 @@ export const TaskEdit = () => {
                   Close
                 </button>
               </TERipple>
+
               <TERipple rippleColor="light">
                 <button
                   onClick={handlerOnSubmit}

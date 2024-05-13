@@ -48,6 +48,8 @@ export const TaskList: React.FC<Props> = ({ board }) => {
   const handlerOnChangeTitle = (event: React.ChangeEvent<HTMLInputElement>) =>
     setNewTitle(event.target.value);
 
+  const handlerOnCloseClick = () => setIsEditing(0);
+
   return (
     <div
       className="pt-5 flex flex-col gap-4 col-span-full min-h-[200px]
@@ -60,19 +62,21 @@ export const TaskList: React.FC<Props> = ({ board }) => {
         <p className={classNames({ hidden: isEditing === board.id })}>
           {board.title}
         </p>
+
         {isEditing === board.id && (
           <form onSubmit={handlerOnSubmit}>
             <TEInput
               value={newTitle}
               autoFocus
               onChange={handlerOnChangeTitle}
-              onBlur={() => setIsEditing(0)}
+              onBlur={handlerOnCloseClick}
               type="text"
               id="exampleFormControlInputText"
               label="Task name"
             />
           </form>
         )}
+
         <div className="flex gap-1 justify-center items-center h-[39px]">
           <p>{board.tasks?.length}</p>
           <DropDownDotsMenu board={board} />

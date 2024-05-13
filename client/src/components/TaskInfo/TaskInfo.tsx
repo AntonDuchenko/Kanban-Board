@@ -37,16 +37,14 @@ export default function TaskInfo(): JSX.Element {
 
   return (
     <div>
-      {/* <!-- Modal --> */}
       <TEModal show={!!task} setShow={removeChangedTask}>
         <TEModalDialog className="!max-w-[60%] !h-[80%] mb-7">
           <TEModalContent className="!h-full">
             <TEModalHeader>
-              {/* <!--Modal title--> */}
               <h5 className="text-xl font-bold leading-normal text-neutral-800 dark:text-neutral-200">
                 {task.name}
               </h5>
-              {/* <!--Close button--> */}
+
               <button
                 type="button"
                 className="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
@@ -69,7 +67,7 @@ export default function TaskInfo(): JSX.Element {
                 </svg>
               </button>
             </TEModalHeader>
-            {/* <!--Modal body--> */}
+
             <TEModalBody className="!p-0 overflow-auto">
               <div className="flex rounded-b-lg h-full flex-col lg:flex-row">
                 <div className="w-full p-7 flex flex-col gap-6 lg:w-[60%]">
@@ -82,12 +80,14 @@ export default function TaskInfo(): JSX.Element {
                             alt="status.svg"
                             className="h-[20px]"
                           />
+
                           <span className="text-gray-400">Status</span>
                         </div>
                         <span className="font-semibold w-[50%]">
                           {task.status.title}
                         </span>
                       </div>
+
                       <div className="flex justify-between items-center">
                         <div className="flex gap-3 items-center w-[50%]">
                           <img
@@ -95,12 +95,15 @@ export default function TaskInfo(): JSX.Element {
                             alt="calendar.svg"
                             className="h-[20px]"
                           />
+
                           <span className="text-gray-400 ">Due date</span>
                         </div>
+
                         <span className="font-semibold w-[50%]">
                           {formatDate(task.dueDate as string)}
                         </span>
                       </div>
+
                       <div className="flex justify-between items-center">
                         <div className="flex gap-3 items-center w-[50%]">
                           <img
@@ -108,8 +111,10 @@ export default function TaskInfo(): JSX.Element {
                             alt="priorityIcon"
                             className="h-[20px]"
                           />
+
                           <span className="text-gray-400">Proirity</span>
                         </div>
+
                         <span className="font-semibold w-[50%]">
                           {task.priority}
                         </span>
@@ -128,6 +133,7 @@ export default function TaskInfo(): JSX.Element {
 
                   <div className="">
                     <div className="font-bold text-lg mb-3">Description</div>
+
                     <p className="text-gray-400">{task.description}</p>
                   </div>
                 </div>
@@ -137,6 +143,7 @@ export default function TaskInfo(): JSX.Element {
         p-7 flex flex-col gap-3 sm:rounded-b-none sm:rounded-br-lg lg:w-[40%]"
                 >
                   <div className="font-semibold text-xl">Activity</div>
+
                   <div className="text-gray-500">
                     <TaskActivity taskHistory={taskHistory} />
                   </div>

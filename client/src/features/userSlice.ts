@@ -22,11 +22,13 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     setLoggedIn: (state, action) => {
-      state.user = action.payload;
+      console.log(action.payload);
+      
+      state.user = action.payload.user;
       state.isAuth = true;
-      state.token = action.payload.access_token;
+      state.token = action.payload.user.access_token;
 
-      localStorage.setItem("userToken", action.payload.access_token);
+      localStorage.setItem("userToken", state.token!);
     },
     setLogOut: (state) => {
       state.isAuth = false;

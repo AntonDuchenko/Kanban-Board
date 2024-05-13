@@ -41,9 +41,11 @@ export const TaskCard: React.FC<Props> = ({ task, index }) => {
             </button>
             <TaskDropDownMenuDots task={task} />
           </div>
+
           <p className="text-slate-400 font-medium text-sm">
             {task.description}
           </p>
+
           <div className="text-slate-400 font-medium text-lg flex gap-2">
             <img src={calendar} alt="calendar.svg" />
             {formatDate(task.dueDate as string)}
@@ -67,6 +69,7 @@ export const TaskCard: React.FC<Props> = ({ task, index }) => {
                   { "bg-lime-400": task.priority === "Low" }
                 )}
               ></span>
+
               <span
                 className={classNames(
                   "relative inline-flex rounded-full h-3 w-3",
