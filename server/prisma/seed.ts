@@ -6,16 +6,15 @@ async function main() {
     data: [
       {
         email: 'test@gmail.com',
-        password: '$2b$10$aZB09tk2aSHha9cZEmZJ7uGF9VrjPC2UvH0cUJ3jKpDXVUOJ.Giey',
+        password:
+          '$2b$10$ffmeKV3qtoqRFUuvGqBP/OFNWupzmitHTgVdKFjz8DSHBiQ/b865m',
       },
       {
-        email: 'test2@gmail.com',
-        password: '$2b$10$aHqYFpt1RaSf6N64WtJdWu370DRc3.Pxery7JrX7456Ph7d6Rv8Ce',
+        email: 'test@gmail.com',
+        password:
+          '$2b$10$ffmeKV3qtoqRFUuvGqBP/OFNWupzmitHTgVdKFjz8DSHBiQ/b865m',
       },
-      {
-        email: 'test3@gmail.com',
-        password: '$2b$10$k2xITJZxUiumi.ADHSYG1OT6y3AE7G3mFXrSSt8Ikn0Wi/Z3kEilK',
-      },]
+    ],
   });
 
   await prisma.board.createMany({

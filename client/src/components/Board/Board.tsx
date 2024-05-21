@@ -14,8 +14,9 @@ export const Board = () => {
     dispatch(statusesSlice.init(+boardId));
   }, [boardId]);
 
-  const statuses = useAppSelector((state) => state.statuses.statuses);  
-
+  const statuses = useAppSelector((state) => state.statuses.statuses);
+  console.log(statuses);
+  
   return (
     <div
       className="xl:grid-cols-12 sm:grid-cols-6 

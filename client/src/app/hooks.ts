@@ -59,8 +59,6 @@ export const useOnDragEnd = (columns: Status[], dispatch: AppDispatch) => {
           tasks: destinationTasks,
         };
 
-        dispatch(statusesSlice.updateStatuses(newColumns));
-
         try {
           await updateTask(+removed.id, { statusId: +destinationStatusId! });
           toastSuccess(`Status of task ${removed.name} was updated`);
@@ -69,6 +67,8 @@ export const useOnDragEnd = (columns: Status[], dispatch: AppDispatch) => {
         }
 
         dispatch(statusesSlice.init(activeBoard?.id!));
+
+        dispatch(statusesSlice.updateStatuses(newColumns));
       }
     },
     [dispatch, columns]

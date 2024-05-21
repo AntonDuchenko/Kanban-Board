@@ -11,6 +11,10 @@ interface initialState {
 const tokenLocal = localStorage.getItem("userToken");
 const isValid = tokenLocal ? timeStampConvertation(tokenLocal) : false;
 
+if (!isValid) {
+  localStorage.removeItem("active_board");
+}
+
 const initialState: initialState = {
   user: isValid ? jwtDecode(tokenLocal!) : null,
   isAuth: isValid ? true : false,
@@ -22,8 +26,6 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     setLoggedIn: (state, action) => {
-      console.log(action.payload);
-      
       state.user = action.payload.user;
       state.isAuth = true;
       state.token = action.payload.user.access_token;

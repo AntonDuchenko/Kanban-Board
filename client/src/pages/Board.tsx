@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import { useAppSelector } from "../app/reduxHooks";
 import { Board } from "../components/Board/Board";
 import { BoardHeader } from "../components/BoardHeader/BoardHeader";

@@ -20,7 +20,14 @@ function App() {
       <div className="container m-auto px-1 h-svh">
         <HashRouter>
           <Routes>
-            <Route path="/" element={<Navigate to={activeBoard ? `/board/${activeBoard.id}` : "/board"} />} />
+            <Route
+              path="/"
+              element={
+                <Navigate
+                  to={activeBoard ? `/board/${activeBoard.id}` : "/board"}
+                />
+              }
+            />
             <Route path="/login" element={<Auth />} />
             <Route path="/register" element={<Auth />} />
             <Route

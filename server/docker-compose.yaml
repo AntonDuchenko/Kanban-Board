@@ -1,11 +1,32 @@
 version: '3.5'
 
 services:
-  bord_db:
-    container_name: bord_db
+  backend:
+    build: .
+    restart: on-failure
+    ports:
+      - 5000:5000
+    depends_on:
+      - db
+    environment: 
+      DATABASE_URL: "postgresql://admin:root@db:5432/bord_db?schema=public"
+      JWT_SECRET: "your-secret"
+    command: sh -c "npx prisma migrate dev --name init && npm run seed && npm run start:prod"
+  db:
+    container_name: board_db
+    restart: always
     ports:
       - '5432:5432'
     environment:
-      - POSTGRES_PASSWORD=root
-      - POSTGRES_USER=admin
+      POSTGRES_PASSWORD: root
+      POSTGRES_USER: admin
+      POSTGRES_DB: bord_db
     image: postgres:14-alpine3.19
+  app:
+    build:
+      context: ../client/
+      dockerfile: Dockerfile
+    ports:
+      - 5173:80
+    depends_on:
+      - backend
